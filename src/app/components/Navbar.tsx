@@ -45,8 +45,8 @@ export default function Navbar() {
       </header>
 
       {/* MEGA MENU */}
-      {open && (
-        <div className="nav-modal">
+      <div className={`nav-modal ${open ? "open" : ""}`}>
+
           <button className="close" onClick={() => setOpen(false)}>✕</button>
 
           <div className="nav-grid">
@@ -75,7 +75,7 @@ export default function Navbar() {
             </div>
 
             {/* CENTER */}
-            <div className="nav-center" key={active}>
+            <div className="nav-center" >
 
               {active === "home" && (
                 <>
@@ -190,7 +190,6 @@ export default function Navbar() {
 
           </div>
         </div>
-      )}
     </>
   );
 }

@@ -169,8 +169,17 @@ body {
   box-shadow: 0 40px 120px rgba(0, 0, 0, 0.18);
   animation: navFadeIn 0.35s ease;
   z-index: 9999;
+   opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: 0.3s ease;
 }
 
+.nav-modal.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
 @keyframes navFadeIn {
   from {
     opacity: 0;
@@ -3806,6 +3815,121 @@ body {
   justify-content: center;
   align-items: center;
 }
+@media (max-width: 1024px) {
+
+  .hriC-hero-container {
+    padding: 50px 40px;
+    gap: 40px;
+  }
+
+  .hriC-title-main {
+    font-size: 48px;
+  }
+
+  .hriC-hero-desc {
+    max-width: 100%;
+  }
+
+  .hriC-main-image-frame {
+    width: 110%;
+    height: 450px;
+    margin-left: -5%;
+  }
+
+  .hriC-main-image-frame img {
+    height: 110%;
+  }
+
+  .hriC-btn-disc {
+    padding: 14px 35px;
+    font-size: 16px;
+  }
+
+}
+@media (max-width: 768px) {
+
+  .hriC-hero-container {
+    flex-direction: column;
+    padding: 40px 20px;
+    min-height: auto;
+  }
+
+  .hriC-content-left {
+    order: 2;
+  }
+
+  .hriC-visual-right {
+    order: 1;
+    width: 100%;
+  }
+
+  .hriC-title-main {
+    font-size: 34px;
+    line-height: 1.2;
+  }
+
+  .hriC-avatar-inline img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .hriC-hero-desc {
+    font-size: 14px;
+    margin-bottom: 25px;
+  }
+
+  .hriC-btn-disc {
+    padding: 12px 28px;
+    font-size: 14px;
+    margin-bottom: 40px;
+  }
+
+  .hriC-service-list {
+    max-width: 100%;
+  }
+
+  .hriC-service-item {
+    padding: 16px 0;
+  }
+
+  .hriC-service-item h4 {
+    font-size: 16px;
+  }
+
+  .hriC-main-image-frame {
+    width: 100%;
+    height: 320px;
+    margin-left: 0;
+    border-radius: 20px;
+  }
+
+  .hriC-main-image-frame img {
+    height: 100%;
+  }
+
+  .hriC-next-section {
+    height: 70vh;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+}
+@media (max-width: 480px) {
+  .hriC-page-wrapper{
+    margin:0;
+    padding:0;
+  }
+  .hriC-title-main {
+    font-size: 28px;
+  }
+
+  .hriC-btn-disc {
+    width: 100%;
+    text-align: center;
+  }
+
+}
+
 
 /* ===============================
    LANDSCAPE PREMIUM Q&A
@@ -3872,6 +3996,79 @@ body {
   .qa-landscape-card h2 {
     font-size: 32px;
   }
+}
+@media (max-width: 1024px) {
+
+  .qa-landscape-section {
+    padding: 120px 20px;
+  }
+
+  .qa-landscape-card {
+    padding: 60px 60px;
+    margin-bottom: 100px;
+    border-radius: 28px;
+  }
+
+  .qa-landscape-content {
+    max-width: 100%;
+  }
+
+  .qa-landscape-card h2 {
+    font-size: 36px;
+    margin-bottom: 24px;
+  }
+
+  .qa-landscape-card p {
+    font-size: 16px;
+    line-height: 1.9;
+  }
+
+}
+@media (max-width: 768px) {
+
+  .qa-landscape-section {
+    padding: 80px 16px;
+  }
+
+  .qa-landscape-card {
+    padding: 40px 28px;
+    margin-bottom: 60px;
+    border-radius: 24px;
+  }
+
+  .qa-landscape-card h2 {
+    font-size: 28px;
+    letter-spacing: -0.5px;
+  }
+
+  .qa-landscape-card p {
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+}
+@media (max-width: 480px) {
+
+  .qa-landscape-section {
+    padding: 0 14px;
+  }
+
+  .qa-landscape-card {
+    padding: 28px 20px;
+    margin-bottom: 40px;
+    border-radius: 20px;
+  }
+
+  .qa-landscape-card h2 {
+    font-size: 22px;
+    margin-bottom: 18px;
+  }
+
+  .qa-landscape-card p {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
 }
 
 .hriC-process-section {
@@ -3981,23 +4178,113 @@ body {
   color: #666;
   line-height: 1.6;
 }
+@media (max-width: 1024px) {
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  .hriC-process-container {
-    flex-direction: column;
-    gap: 40px;
+  .hriC-process-section {
+    padding: 70px 30px;
   }
 
+  .hriC-process-title {
+    font-size: 30px;
+  }
+
+  .hriC-process-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 50px 30px;
+    position: relative;
+  }
+
+  /* Remove horizontal connecting line */
   .hriC-process-line {
     display: none;
-    /* Hide horizontal line on mobile */
+  }
+
+  .hriC-process-step {
+    padding: 0 10px;
+  }
+
+  .hriC-step-icon-wrapper {
+    width: 70px;
+    height: 70px;
+  }
+
+  .hriC-step-title {
+    font-size: 18px;
+  }
+
+  .hriC-step-desc {
+    font-size: 13px;
+  }
+
+}
+
+
+@media (max-width: 768px) {
+
+  .hriC-process-section {
+    padding: 60px 20px;
+  }
+
+  .hriC-process-header {
+    margin-bottom: 40px;
+  }
+
+  .hriC-process-title {
+    font-size: 24px;
+  }
+
+  .hriC-process-container {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
   }
 
   .hriC-process-step {
     padding: 0;
   }
+
+  .hriC-step-icon-wrapper {
+    width: 65px;
+    height: 65px;
+    margin-bottom: 18px;
+  }
+
+  .hriC-step-icon {
+    font-size: 24px;
+  }
+
+  .hriC-step-title {
+    font-size: 17px;
+  }
+
+  .hriC-step-desc {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
 }
+
+@media (max-width: 480px) {
+
+  .hriC-process-section {
+    padding: 10px 15px;
+  }
+
+  .hriC-process-title {
+    font-size: 20px;
+  }
+
+  .hriC-step-title {
+    font-size: 16px;
+  }
+
+  .hriC-step-desc {
+    font-size: 13px;
+  }
+
+}
+
 
 .bridal-pricing-wrapper {
   background-color: #050508;
@@ -4137,20 +4424,93 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 0 30px rgba(58, 77, 233, 0.6);
 }
-
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-  .bridal-plan-title {
-    font-size: 60px;
-  }
+@media (max-width: 1024px) {
 
   .bridal-pricing-wrapper {
-    padding: 0 20px;
+    min-height: 70vh;
+    padding: 80px 30px;
   }
+
+  .bridal-plan-title {
+    font-size: 72px;
+    letter-spacing: -1px;
+  }
+
+  .bridal-amount {
+    font-size: 34px;
+  }
+
+  .bridal-disclaimer {
+    font-size: 15px;
+    max-width: 90%;
+  }
+
+  .bridal-visual-pillar {
+    height: 220px;
+  }
+
 }
 
+
+@media (max-width: 768px) {
+
+  .bridal-pricing-wrapper {
+    min-height: auto;
+    padding: 80px 20px;
+  }
+
+  .bridal-plan-title {
+    font-size: 48px;
+    margin-bottom: 15px;
+  }
+
+  .bridal-price-card {
+    padding: 8px 22px;
+  }
+
+  .bridal-amount {
+    font-size: 28px;
+  }
+
+  .bridal-disclaimer {
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+
+  .bridal-cta-button {
+    padding: 12px 28px;
+    font-size: 14px;
+  }
+
+  .bridal-visual-pillar {
+    display: none; /* cleaner mobile look */
+  }
+
+}
+@media (max-width: 480px) {
+
+  .bridal-plan-title {
+    font-size: 36px;
+  }
+
+  .bridal-amount {
+    font-size: 24px;
+  }
+
+  .bridal-disclaimer {
+    font-size: 13px;
+  }
+
+  .bridal-cta-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+}
+
+
 .hairrepgal-section {
-  padding: 120px 0;
+  padding:  0;
   background: #ffffff;
   overflow: hidden;
 }
@@ -4236,8 +4596,8 @@ body {
 
 .hairrepgal-cta {
   max-width: 1280px;
-  margin: 60px auto 0;
-  padding: 0 20px;
+  margin: 0;
+  padding: 20px 20px;
 }
 
 .hairrepgal-button {
@@ -4248,6 +4608,7 @@ body {
   border-bottom: 2px solid #0f172a;
   padding-bottom: 4px;
 }
+
 
 @media (max-width: 768px) {
   .hairrepgal-card {
@@ -4326,13 +4687,81 @@ body {
   line-height: 1.8;
   color: #475569;
 }
+@media (max-width: 1024px) {
+
+  .hairreplac-faq-section {
+    padding: 120px 20px;
+  }
+
+  .hairreplac-faq-header {
+    margin-bottom: 60px;
+  }
+
+  .hairreplac-faq-question {
+    font-size: 19px;
+  }
+
+  .hairreplac-faq-answer p {
+    font-size: 15px;
+  }
+
+}
+
 
 /* MOBILE */
 @media (max-width: 768px) {
+
+  .hairreplac-faq-section {
+    padding: 80px 18px;
+  }
+
+  .hairreplac-faq-header {
+    margin-bottom: 40px;
+  }
+
+  .hairreplac-faq-header h2 {
+    font-size: 28px;
+    letter-spacing: -0.5px;
+  }
+
+  .hairreplac-faq-item {
+    padding: 24px 0;
+  }
+
   .hairreplac-faq-question {
+    font-size: 17px;
+  }
+
+  .hairreplac-faq-icon {
     font-size: 18px;
   }
+
+  .hairreplac-faq-answer p {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
 }
+@media (max-width: 480px) {
+
+  .hairreplac-faq-section {
+    padding: 60px 15px;
+  }
+
+  .hairreplac-faq-header h2 {
+    font-size: 22px;
+  }
+
+  .hairreplac-faq-question {
+    font-size: 16px;
+  }
+
+  .hairreplac-faq-answer p {
+    font-size: 13px;
+  }
+
+}
+
 
 /* Hair Replacement-In-Chennai Ends*/
 /* Bridal Studio Starts */
@@ -5927,7 +6356,10 @@ body {
     left: 50%;
     transform: translateX(-50%);
   }
+  
 
 }
+
+
 
 /* HairCare & SkinCare Ends */
