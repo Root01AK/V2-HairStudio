@@ -23,7 +23,7 @@ export default function AboutHero() {
           Discover our <span>V2 Studio</span>
         </h2>
         <p>
-          Chennai’s Trusted Hair Replacement & Bridal Studio <br/>
+          Chennai’s Trusted Hair Replacement & Bridal Studio. <br/>
           Our journey began with a simple mission — to create a space where transformation feels comfortable, private, and empowering.
         </p>
       </div>

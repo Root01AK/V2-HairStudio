@@ -37,7 +37,7 @@ export default function TrustSection() {
                     {/* Static Google Badge for faster Loading Perception */}
                     <div id="google-rating-card">
                         <div id="g-icon-box">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_Logo.svg" alt="Google" />
+                            <img src="/g-logo.png" alt="Google" />
                             <small>Google reviews</small>
                         </div>
                         <div id="rating-stars-val">

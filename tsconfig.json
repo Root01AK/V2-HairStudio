@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "src/app/OurStory/page.jsx", "src/app/Gallery/page.jsx", "src/app/components/BridalApproach.jsx", "src/app/Hair-Replacement-in-Chennai/page.jsx"  ],
+, "src/app/OurStory/page.jsx", "src/app/Gallery/page.jsx", "src/app/components/BridalApproach.jsx", "src/app/Hair-Replacement-in-Chennai/page.jsx", "src/app/components/HomeBridal.jsx", "src/app/components/WhyChooseUs.jsx"  ],
   "exclude": ["node_modules"]
 }

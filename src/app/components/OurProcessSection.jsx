@@ -52,14 +52,12 @@ export default function OurProcessRotating() {
   return (
     <>
       <section ref={sectionRef} className="process-rotating-section">
-
-
         <div className="process-layout">
 
           {/* LEFT CONTENT */}
           <div className="process-left">
-            <h2>Our Proven Hair Replacement Process</h2>
-            <p>Safe. Structured. Non-Surgical. Natural</p>
+            <h1>Our Proven Hair Replacement Process</h1>
+            <h2>Safe. Structured. Non-Surgical. Natural</h2>
             <p className="process-desc">
               At V2 Hair Studio, we follow a clinically guided, step-by-step hair replacement process to deliver safe,
               natural-looking, and long-lasting results — completely non-surgical and pain-free.
@@ -67,13 +65,28 @@ export default function OurProcessRotating() {
               Every procedure is performed by experienced specialists in a hygienic, private environment designed for your comfort,
               confidentiality, and confidence.
             </p>
+            <div className="process-highlights">
+              <div className="highlight-item">
+                <span className="dot"></span>
+                <p>100% Non-Surgical & Pain-Free</p>
+              </div>
 
-            <ul className="process-points">
-              <li>➔ 100% Non-Surgical & Pain-Free</li>
-              <li>➔ Customized for Every Scalp Type</li>
-              <li>➔ Hygienic Clinical Setup</li>
-              <li>➔ Natural-Looking, Seamless Results</li>
-            </ul>
+              <div className="highlight-item">
+                <span className="dot"></span>
+                <p>Customized for Every Scalp Type</p>
+              </div>
+
+              <div className="highlight-item">
+                <span className="dot"></span>
+                <p>Hygienic Clinical Setup</p>
+              </div>
+
+              <div className="highlight-item">
+                <span className="dot"></span>
+                <p>Natural-Looking, Seamless Results</p>
+              </div>
+            </div>
+
           </div>
 
 
@@ -121,16 +134,23 @@ export default function OurProcessRotating() {
           </div>
 
         </div>
-        {/* NEW PROGRESS STRIP UI CLONE */}
         <div className="process-steps-strip">
           {stepsData.map((step, index) => (
             <div key={index} className="process-strip-card">
-              <span className="process-step-label">STEP—{step.num}</span>
+              <span className="process-step-label">STEP — {step.num}</span>
+
               <h3 className="process-step-title">{step.title}</h3>
-              <p className="process-step-description">{step.desc}</p>
+
+              <div className="hover-hint">Hover to view more</div>
+
+              <div className="process-step-content">
+                <p className="process-step-description">{step.desc}</p>
+              </div>
             </div>
           ))}
         </div>
+
+
       </section>
       <WhyChooseUs />
     </>
