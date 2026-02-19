@@ -3246,6 +3246,253 @@ body {
   grid-column: span 2;
   grid-row: span 2;
 }
+.luxury-hero {
+  position: relative;
+  min-height: 100vh;
+  background: var(--secondary-dark);
+  /* beige tone */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Background gem image */
+.luxury-image {
+  position: absolute;
+  right: 10%;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Text content */
+.luxury-content {
+  position: relative;
+  z-index: 2;
+  padding-left: 6%;
+  max-width: 1500px;
+}
+
+.luxury-content h1 {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(48px, 8vw, 160px);
+  font-weight: 500;
+  line-height: 1.05;
+  color: white;
+  margin: 0;
+  transform-origin: left center;
+  text-transform: uppercase;
+}
+
+.luxury-sub {
+  margin-top: 28px;
+  max-width: 460px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: whitesmoke;
+  opacity: 0.9;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .luxury-hero {
+    padding: 80px 0;
+  }
+
+  .luxury-image {
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    margin: 40px auto 0;
+    text-align: center;
+  }
+
+  .luxury-content {
+    padding: 0 20px;
+  }
+}
+
+/* ==========================
+   GALLERY – EDITORIAL STYLE
+========================== */
+
+.gallery-child.dark {
+  padding: 120px 40px;
+  background: #ffffff;
+}
+
+/* =========================
+   CATEGORIES (PILLS)
+========================= */
+
+.gallery-categories {
+  /* optional, remove if not needed */
+  top: 90px;
+  /* adjust to your navbar height */
+  z-index: 10;
+
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 60px;
+}
+
+.category-pill {
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: 1px solid #333;
+  background: transparent;
+  color: #aaa;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.category-pill:hover {
+  color: #fff;
+  border-color: #555;
+}
+
+.category-pill.active {
+  background: #ef6548;
+  color: #fff;
+  border-color: #ef6548;
+}
+
+/* BIGGER GRID */
+.gallery-grid {
+  max-width: 1600px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 260px;
+  /* BIGGER ROWS */
+  gap: 30px;
+}
+
+/* ITEM */
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  cursor: pointer;
+  background: #111;
+  transition: transform 0.4s ease;
+}
+
+.gallery-item:hover {
+  transform: translateY(-6px);
+}
+
+.gallery-item img,
+.gallery-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.gallery-item:hover img,
+.gallery-item:hover video {
+  transform: scale(1.06);
+}
+
+/* SIZE VARIATIONS */
+
+.gallery-item.small {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+.gallery-item.medium {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.gallery-item.large {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+@media (max-width: 480px) {
+  .luxury-hero {
+    padding: 20px 0;
+     min-height: 50vh;
+  }
+
+  .luxury-content h1 {
+    font-size: 32px;
+  }
+  .luxury-content{
+    margin-top: 50px;
+  }
+
+  .luxury-image {
+    width: 220px;
+  }
+
+}
+@media (max-width: 1024px) {
+
+  .gallery-child.dark {
+    padding: 80px 30px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 220px;
+    gap: 20px;
+  }
+
+  /* Remove large spanning for cleaner tablet layout */
+  .gallery-item.large,
+  .gallery-item.medium {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+}
+@media (max-width: 768px) {
+
+  .gallery-child.dark {
+    padding: 60px 20px;
+  }
+
+  .gallery-categories {
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+
+  .category-pill {
+    font-size: 12px;
+    padding: 8px 16px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 260px;
+    gap: 18px;
+  }
+
+}
+@media (max-width: 480px) {
+   .gallery-child.dark {
+    padding: 10px 0;
+  }
+
+  .gallery-grid {
+    grid-auto-rows: 220px;
+  }
+
+  .category-pill {
+    font-size: 11px;
+    padding: 6px 14px;
+  }
+
+}
 
 /* LIGHTBOX */
 
@@ -3280,6 +3527,20 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+@media (max-width: 1024px) {
+
+  .lightbox {
+    padding: 30px;
+  }
+
+  .lightbox img,
+  .lightbox video {
+    max-height: 80vh;
+    border-radius: 16px;
+  }
+
+}
+
 
 @media (max-width: 600px) {
   .gallery-grid {
@@ -3287,6 +3548,99 @@ body {
     grid-auto-rows: 300px;
   }
 }
+@media (max-width: 768px) {
+
+  /* =========================
+     LIGHTBOX MOBILE
+  ========================== */
+
+  .lightbox {
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+  }
+
+  .lightbox-content {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .lightbox img,
+  .lightbox video {
+    width: 100%;
+    height: auto;
+    max-height: 75vh;
+    object-fit: contain;
+    border-radius: 14px;
+  }
+
+  /* =========================
+     GALLERY GRID MOBILE
+  ========================== */
+
+.gallery-child.dark {
+  padding: 20px 20px 80px 20px;
+}
+
+  .gallery-categories {
+    gap: 10px;
+    margin-bottom:0;
+  }
+
+  .category-pill {
+    font-size: 12px;
+    padding: 8px 16px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: 260px;
+    gap: 18px;
+  }
+
+  /* Remove special spans on mobile */
+  .gallery-item.large,
+  .gallery-item.medium,
+  .gallery-item.small {
+    grid-column: span 1 !important;
+    grid-row: span 1 !important;
+  }
+
+  .gallery-item {
+    border-radius: 18px;
+  }
+
+}
+
+@media (max-width: 480px) {
+
+  .lightbox {
+    padding: 15px;
+  }
+
+  .lightbox img,
+  .lightbox video {
+    max-height: 70vh;
+    border-radius: 12px;
+  }
+
+  .gallery-grid {
+    grid-auto-rows: 220px;
+   
+  }
+
+  .category-pill {
+    font-size: 11px;
+    padding: 6px 14px;
+  }
+ 
+}
+
 
 @keyframes fadeIn {
   from {
@@ -6972,20 +7326,190 @@ body {
 
 /* Responsive */
 @media (max-width: 1024px) {
+
+  /* HERO SECTION */
+  .hcskincare-hero-wrapper {
+    padding: 70px 0;
+    min-height: auto;
+  }
+
+  .hcskincare-brand-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 20px;
+  }
+
+  .hcskincare-brand-name {
+    font-size: 56px;
+  }
+
+  .hcskincare-header-stats {
+    font-size: 14px;
+  }
+
+  .hcskincare-main-container,
+  .hcskincare-lower-container {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 20px;
+  }
+
+  .hcskincare-hero-text h2 {
+    font-size: 42px;
+  }
+
+  .hcskincare-label-large {
+    font-size: 32px;
+  }
+
+  .hcskincare-range-label {
+    text-align: left;
+  }
+
+  /* CONTENT SECTION */
+  .hcskincare-container {
+    padding: 80px 6vw;
+  }
+
+  .hcskincare-section {
+    margin-bottom: 80px;
+  }
+
+  .hcskincare-header {
+    margin-bottom: 40px;
+  }
+
+  .hcskincare-h2 {
+    font-size: 38px;
+  }
+
+}
+@media (max-width: 768px) {
+
+  /* HERO */
+  .hcskincare-hero-wrapper {
+    padding: 50px 0;
+  }
+
+  .hcskincare-brand-header {
+    padding: 15px;
+  }
+
+  .hcskincare-brand-name {
+    font-size: 40px;
+    letter-spacing: -1px;
+  }
+
+  .hcskincare-brand-sub {
+    font-size: 14px;
+  }
+
+  .hcskincare-main-container,
+  .hcskincare-lower-container {
+    padding: 15px;
+    gap: 25px;
+  }
+
+  .hcskincare-hero-text h2 {
+    font-size: 30px;
+  }
+
+  .hcskincare-label {
+    font-size: 16px;
+  }
+
+  .hcskincare-hero-desc p {
+    font-size: 14px;
+  }
+
+  .hcskincare-label-large {
+    font-size: 24px;
+  }
+
+  .hcskincare-img-reveal {
+    aspect-ratio: 4 / 3;
+  }
+
+  /* CONTENT SECTION */
+  .hcskincare-container {
+    padding: 60px 20px;
+  }
+
+  .hcskincare-h2 {
+    font-size: 28px;
+  }
+
+  .hcskincare-card {
+    padding: 25px;
+  }
+
+  .hcskincare-card h3 {
+    font-size: 18px;
+  }
+
+  .hcskincare-card p {
+    font-size: 14px;
+  }
+
+  /* LIST STYLE SECTION */
   .hcskincare-list-item {
     flex-direction: column;
     align-items: flex-start;
-    gap: 20px;
+    padding: 25px 0;
+  }
+
+  .hcskincare-list-left {
+    gap: 15px;
+  }
+
+  .hcskincare-list-title {
+    font-size: 18px;
   }
 
   .hcskincare-list-desc {
+    font-size: 14px;
     padding: 0;
   }
 
   .hcskincare-arrow {
     display: none;
   }
+
 }
+@media (max-width: 480px) {
+  .hcskincare-container {
+  padding:50px 8vw;
+}
+.hcskincare-hero-wrapper {
+  padding: 50px 0;
+   min-height: 60vh;
+ 
+}
+.hcskincare-brand-header{
+   padding-bottom:0;
+  padding: 0;
+
+}
+
+  .hcskincare-brand-name {
+    font-size: 32px;
+  }
+
+  .hcskincare-hero-text h2 {
+    font-size: 24px;
+  }
+
+  .hcskincare-h2 {
+    font-size: 22px;
+  }
+
+  .hcskincare-card {
+    padding: 20px;
+  }
+
+}
+
 /* ===============================
    BRIDAL HERO – TABLET
 ================================ */
