@@ -59,31 +59,28 @@ export default function ServicesPage() {
   );
 
   const containerRef = useRef<HTMLDivElement>(null);
-
 useEffect(() => {
   const ctx = gsap.context(() => {
     const sections = servicesData.length;
+    const scrollLength = window.innerHeight * sections;
 
-    // 📌 PIN ENTIRE SECTION
     ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top",
-      end: `+=${window.innerHeight * sections}`,
+      end: `+=${scrollLength}`,
       pin: true,
       scrub: true,
     });
 
-    // 🔁 Service switching based on scroll progress
     ScrollTrigger.create({
       trigger: containerRef.current,
       start: "top top",
-      end: `+=${window.innerHeight * sections}`,
+      end: `+=${scrollLength}`,
       scrub: true,
       onUpdate: (self) => {
         const progress = self.progress;
         const index = Math.floor(progress * sections);
         const safeIndex = Math.min(index, sections - 1);
-
         setActiveService(servicesData[safeIndex]);
       },
     });
