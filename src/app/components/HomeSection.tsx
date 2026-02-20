@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 
 const slides = [
-  { type: "image", src: "/1.png" },
+  { type: "image", src: "/sample-poster-1.png" },
   { type: "video", src: "/3.mp4" },
   { type: "image", src: "/1.png" },
 ];

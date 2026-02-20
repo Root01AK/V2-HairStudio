@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import CtaSection from "./CtaSection";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -65,6 +66,7 @@ export default function BridalCollection() {
   }, []);
 
   return (
+    <>
     <section id="bridal-hero">
       <div id="left-side">
         <div id="portrait-frame">
@@ -104,5 +106,7 @@ export default function BridalCollection() {
         </div>
       </div>
     </section>
+    <CtaSection/>
+    </>
   );
 }

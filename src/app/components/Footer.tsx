@@ -17,26 +17,27 @@ export default function Footer() {
             </div>
 
             <address>
-              9 Pearse Street, Kinsale<br />
-              Chennai, India
+             149, Bismi Tower, 2nd Floor,
+          Arcot Road,<br/> Valasaravakkam,
+          Chennai-600087, Tamil Nadu
             </address>
 
             <a href="mailto:info@v2hairstudio.com">
-              info@v2hairstudio.com
+              v2salonstudio@gmail.com
             </a>
 
             <a href="tel:+919999999999">
-              (+91) 99999 99999
+              044-4204 9221 | +91 88076 67077
             </a>
           </div>
 
           {/* Menu */}
           <div className="footer-column">
             <h4>MENU</h4>
-            <Link href="/AboutUs">About</Link>
-            <Link href="/services">Services</Link>
-            <Link href="/lookbook">Lookbook</Link>
+            <Link href="/AboutUs">OurStory</Link>
+            <Link href="/services">Gallery</Link>
             <Link href="/bridal-studio">Bridal Studio</Link>
+            <Link href="/lookbook">Advanced Care</Link>
           </div>
 
           {/* Shop / Services */}
@@ -49,7 +50,7 @@ export default function Footer() {
           </div>
 
           {/* Legal */}
-          <div className="footer-column">
+          <div id="info" class="footer-column">
             <h4>INFO</h4>
             <Link href="/blog">Blog</Link>
             <Link href="/contact">Contact</Link>
@@ -78,7 +79,7 @@ export default function Footer() {
 
         {/* Big Branding */}
         <div className="footer-brand">
-          v2  hair studio
+          v2  Hair Studio
         </div>
 
       </div>

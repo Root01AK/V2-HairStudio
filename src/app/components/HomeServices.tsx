@@ -59,35 +59,35 @@ export default function ServicesPage() {
   );
 
   const containerRef = useRef<HTMLDivElement>(null);
-useEffect(() => {
-  const ctx = gsap.context(() => {
-    const sections = servicesData.length;
-    const scrollLength = window.innerHeight * sections;
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const sections = servicesData.length;
+      const scrollLength = window.innerHeight * sections;
 
-    ScrollTrigger.create({
-      trigger: containerRef.current,
-      start: "top top",
-      end: `+=${scrollLength}`,
-      pin: true,
-      scrub: true,
-    });
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: "top top",
+        end: `+=${scrollLength}`,
+        pin: true,
+        scrub: true,
+      });
 
-    ScrollTrigger.create({
-      trigger: containerRef.current,
-      start: "top top",
-      end: `+=${scrollLength}`,
-      scrub: true,
-      onUpdate: (self) => {
-        const progress = self.progress;
-        const index = Math.floor(progress * sections);
-        const safeIndex = Math.min(index, sections - 1);
-        setActiveService(servicesData[safeIndex]);
-      },
-    });
-  }, containerRef);
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: "top top",
+        end: `+=${scrollLength}`,
+        scrub: true,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const index = Math.floor(progress * sections);
+          const safeIndex = Math.min(index, sections - 1);
+          setActiveService(servicesData[safeIndex]);
+        },
+      });
+    }, containerRef);
 
-  return () => ctx.revert();
-}, []);
+    return () => ctx.revert();
+  }, []);
 
 
   return (
@@ -97,8 +97,10 @@ useEffect(() => {
         <div id="left-column">
           <span id="label">Our Service</span>
           <h1 id="main-heading">
-            Advanced Hair & Scalp Solutions Tailored for You
+            Advanced<span className="highlight-text">Hair & Scalp</span>
+            Solutions Tailored for You
           </h1>
+
           <p id="intro-text">
             At V2 Hair Studio, we offer personalized hair replacement,
             haircare, and bridal beauty services designed to deliver natural
@@ -110,11 +112,10 @@ useEffect(() => {
               <li
                 key={service.id}
                 data-id={service.id}
-                className={`service-item ${
-                  activeService.id === service.id
+                className={`service-item ${activeService.id === service.id
                     ? "active-item"
                     : "inactive-item"
-                }`}
+                  }`}
                 onClick={() => setActiveService(service)}
               >
                 {service.title}

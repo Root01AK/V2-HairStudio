@@ -9,11 +9,8 @@ export default function SkincareHero() {
       {/* BRAND HEADER LINE */}
       <header className="hcskincare-brand-header">
         <div className="hcskincare-logo-group">
-          <h1 className="hcskincare-brand-name">GLOWRA</h1>
-          <p className="hcskincare-brand-sub">Skincare & Hair Wellness.</p>
-        </div>
-        <div className="hcskincare-header-stats">
-          <span>18x, 100x</span>
+          <h1 className="hcskincare-brand-name">V2 Advanced Care</h1>
+          <p className="hcskincare-brand-sub">Hair & Skin Wellness</p>
         </div>
       </header>
 
@@ -27,17 +24,19 @@ export default function SkincareHero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            Nourish Your Glow. <br />
-            Define Your Radiance.
+           Advanced Solutions.<br />
+          Visible Confidence. 
           </motion.h2>
         </div>
         
         <div className="hcskincare-hero-desc">
-          <span className="hcskincare-label">Description</span>
+          <span className="hcskincare-label">Define Your Glow.</span>
           <p>
-            Glowra is a beauty and wellness brand dedicated to fusing cutting-edge 
-            science with natural ingredients. Every product is crafted to enhance 
-            your natural beauty.
+            V2 Advanced Care is a premium hair and skin wellness division of V2 Hair
+            Studio, designed to combine clinical expertise with high-performance formulations.
+
+            Every treatment and product is carefully developed to restore scalp health, 
+            strengthen hair, and enhance skin vitality — helping you look confident, refreshed, and naturally radiant.
           </p>
         </div>
       </div>
@@ -47,22 +46,22 @@ export default function SkincareHero() {
       {/* MOBILE/LOWER HERO SECTION */}
       <div className="hcskincare-lower-container">
         <div className="hcskincare-tagline-box">
-          <h3 className="hcskincare-label-large">Tagline</h3>
+          <h3 className="hcskincare-label-large">Where Science Meets Self-Confidence.</h3>
           <p>
-            Glowra is a beauty and wellness brand dedicated to fusing natural 
-            ingredients. Every product enhances your natural beauty.
+            V2 Advanced Care blends dermatological science with curated natural actives to 
+            restore, repair, and refine. From scalp rejuvenation to skin revitalization, every formula is designed to enhance your natural identity — not mask it.
           </p>
         </div>
 
         <div className="hcskincare-image-box">
-          <span className="hcskincare-range-label">HERO Skincare-range</span>
+          <span className="hcskincare-range-label">Clinical Care. Luxury Experience. Visible Results.</span>
           <motion.div 
             className="hcskincare-img-reveal"
             initial={{ clipPath: "inset(0 100% 0 0)" }}
             whileInView={{ clipPath: "inset(0 0% 0 0)" }}
             transition={{ duration: 1.2, ease: "circOut" }}
           >
-            <img src="/1.png" alt="Skincare Model" />
+            <img src="/adv-1.png" alt="Skincare Model" />
           </motion.div>
         </div>
       </div>

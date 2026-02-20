@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import WhyChooseUs from './WhyChooseUs';
-
+import { useState } from "react";
 gsap.registerPlugin(ScrollTrigger);
 
 const stepsData = [
@@ -16,7 +16,19 @@ const stepsData = [
 export default function OurProcessRotating() {
   const sectionRef = useRef(null);
   const ringRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
 
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
@@ -99,25 +111,25 @@ export default function OurProcessRotating() {
               <div ref={ringRef} className="process-ring">
 
                 <div className="process-step top">
-                  <img src="/process/consultation.jpg" alt="" />
+                  <img src="./process/p-1.png" alt="" />
                   <span>01</span>
                   <h4>Hair Sample Analysis</h4>
                 </div>
 
                 <div className="process-step right">
-                  <img src="/process/design.jpg" alt="" />
+                  <img src="./process/p-2.png" alt="" />
                   <span>02</span>
                   <h4>Precision Application</h4>
                 </div>
 
                 <div className="process-step bottom">
-                  <img src="/process/application.jpg" alt="" />
+                  <img src="./process/p-3.png" alt="" />
                   <span>03</span>
                   <h4>Personalized Styling</h4>
                 </div>
 
                 <div className="process-step left">
-                  <img src="/process/styling.jpg" alt="" />
+                  <img src="./process/p-4.png" alt="" />
                   <span>04</span>
                   <h4>Confidence Restored</h4>
                 </div>
@@ -135,19 +147,41 @@ export default function OurProcessRotating() {
 
         </div>
         <div className="process-steps-strip">
-          {stepsData.map((step, index) => (
-            <div key={index} className="process-strip-card">
-              <span className="process-step-label">STEP — {step.num}</span>
+          {stepsData.map((step, index) => {
+            const isActive = activeIndex === index;
 
-              <h3 className="process-step-title">{step.title}</h3>
+            return (
+              <div
+                key={index}
+                className={`process-strip-card ${isActive ? "active" : ""}`}
+                onClick={() => {
+                  if (isMobile) {
+                    setActiveIndex(isActive ? null : index);
+                  }
+                }}
+              >
+                <span className="process-step-label">
+                  STEP — {step.num}
+                </span>
 
-              <div className="hover-hint">Hover to view more</div>
+                <h3 className="process-step-title">{step.title}</h3>
 
-              <div className="process-step-content">
-                <p className="process-step-description">{step.desc}</p>
+                <div className="hover-hint">
+                  {isMobile
+                    ? isActive
+                      ? "Tap to close"
+                      : "Tap to view"
+                    : "Hover me"}
+                </div>
+
+                <div className="process-step-content">
+                  <p className="process-step-description">
+                    {step.desc}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
 
