@@ -50,7 +50,7 @@ export default function Footer() {
           </div>
 
           {/* Legal */}
-          <div id="info" >
+          <div id="info" className="footer-column">
             <h4>INFO</h4>
             <Link href="/blog">Blog</Link>
             <Link href="/contact">Contact</Link>
