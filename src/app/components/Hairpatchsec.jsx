@@ -54,7 +54,7 @@ export default function HairPatchServices() {
             <button className="hairpthfm-book-btn">BOOK NOW ›</button>
           </div>
           <div className="hairpthfm-image-side">
-            <img src="/hair-system-1.jpg" alt="Service Detail" />
+            <img src="/1.png" alt="Service Detail" />
           </div>
         </section>
 
@@ -73,7 +73,7 @@ export default function HairPatchServices() {
             <button className="hairpthfm-book-btn">BOOK NOW ›</button>
           </div>
           <div className="hairpthfm-image-side">
-            <img src="/hair-system-2.jpg" alt="Scalp Detail" />
+            <img src="/1.png" alt="Scalp Detail" />
           </div>
         </section>
 

@@ -1,186 +1,98 @@
-"use client"
+"use client";
 
-import React, { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
-import HairReplacementQA from "../components/HairReplacementQA"
+import { useRef } from "react";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function HeroSection() {
-  const sectionRef = useRef(null);
+export default function DockingHero() {
   const containerRef = useRef(null);
+  const imageRef = useRef(null);
+  const nextRef = useRef(null); // Added for pinSpacing reference
 
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const section = sectionRef.current;
-      const wrapper = document.querySelector("#hriC-3d-wrap");
-      const beforeImg = document.querySelector(".image-front");
-      const afterImg = document.querySelector(".image-back");
-
-      // --- Initial states (NO OVERLAP) ---
-      gsap.set(wrapper, { transformPerspective: 2000 });
-
-      gsap.set(beforeImg, {
-        xPercent: -25,
-        rotateY: -20,
-        rotateZ: -3,
-        scale: 1.18,
-        opacity: 1,
-        z: 0
-      });
-
-      gsap.set(afterImg, {
-        xPercent: 35,
-        rotateY: 25,
-        rotateZ: 4,
-        scale: 1.18,
-        opacity: 0,
-        z: -400
-      });
-
+  useGSAP(
+    () => {
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: section,
+          trigger: ".hero-section",
           start: "top top",
-          end: "+=1800",
+          endTrigger: nextRef.current || ".next-section",
+          end: "+=1200",
           scrub: true,
           pin: true,
-          anticipatePin: 1
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+          markers: false // Set true for debugging
         }
       });
 
-      // --- BEFORE enters clean ---
-      tl.to(beforeImg, {
-        xPercent: 0,
-        rotateY: 0,
-        rotateZ: 0,
-        scale: 1,
-        duration: 1,
-        ease: "power3.out"
-      });
+      // Image docks to top-left-ish position
+      tl.to(imageRef.current, {
+        x: "-55vw",
+        y: "20vh",
+        scale: 0.75,
+        ease: "power2.inOut"
+      }, 0);
 
-      // --- HARD HANDOFF (this removes ghosting) ---
-      tl.to(beforeImg, {
+      // Bonus: Animate hero text for polish
+      tl.from(".hero-left h1", {
+        y: 50,
         opacity: 0,
-        z: -500,
-        duration: 0.6,
-        ease: "power2.in"
-      });
+        duration: 0.8
+      }, 0);
+      tl.to(".hero-left", {
+        y: -30,
+        opacity: 0.8,
+        duration: 0.5
+      }, 0.2);
 
-      // --- AFTER enters AFTER before exits ---
-      tl.to(afterImg, {
-        opacity: 1,
-        xPercent: 0,
-        rotateY: 0,
-        rotateZ: 0,
-        scale: 1,
-        z: 0,
-        duration: 1,
-        ease: "power3.out"
-      }, "-=0.2");
-
-      // --- Camera settle ---
-      tl.to(wrapper, {
-        rotateX: 0,
-        rotateY: 0,
-        duration: 0.8,
-        ease: "power2.out"
-      });
-
-      // --- SUBTLE LUXURY MOTION (loop, not scroll) ---
-      gsap.to(afterImg, {
-        y: -8,
-        rotateY: 1.5,
-        duration: 4,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true
-      });
-
-    }, sectionRef);
-
-    return () => ctx.revert();
-  }, []);
-
+      // Animate next section reveal
+      tl.from(".next-right h2", {
+        y: 100,
+        opacity: 0,
+        duration: 1
+      }, 0.6);
+    },
+    { scopeKey: containerRef } // Better than just scope for deps tracking
+  );
 
   return (
-    <div className="hriC-page-wrapper" ref={sectionRef}>
-      <section className="hriC-hero-container" ref={containerRef}>
-
-        {/* Left Content Side */}
-        <div className="hriC-content-left">
-          <h1 className="hriC-title-main">
-            The Art and Science <br />
-            <span className="hriC-avatar-inline">
-              <img src="https://i.pravatar.cc/100?u=1" alt="p1" />
-              <img src="https://i.pravatar.cc/100?u=2" alt="p2" />
-              <img src="https://i.pravatar.cc/100?u=3" alt="p3" />
-            </span>
-            of Crafting <br /> Exceptional Designs
-          </h1>
-
-          <p className="hriC-hero-desc">
-            It is a long established fact that a reader will be distracted by the readable content
-            of a page when looking at its layout. The point of using Lorem Ipsum is that it has
-            a more-or-less normal distribution.
-          </p>
-
-          <button className="hriC-btn-disc">Discove</button>
-
-          <div className="hriC-service-list">
-            <div className="hriC-service-item">
-              <div className="hriC-item-left">
-                <span className="hriC-icon">📊</span>
-                <div>
-                  <h4>PITCH DECKS</h4>
-                  <p>The latest trends</p>
-                </div>
-              </div>
-              <span className="hriC-arrow">→</span>
-            </div>
-
-            <div className="hriC-service-item">
-              <div className="hriC-item-left">
-                <span className="hriC-icon">📝</span>
-                <div>
-                  <h4>AI PRESENTATIONS</h4>
-                  <p>1000+ EXAMPLES</p>
-                </div>
-              </div>
-              <span className="hriC-arrow">→</span>
-            </div>
-          </div>
+    <div ref={containerRef}>
+      <section className="hero-section min-h-screen flex items-center justify-between p-8 lg:p-20 bg-gradient-to-br from-slate-900 via-purple-900/30 to-slate-900 overflow-hidden">
+        <div className="hero-left max-w-md z-10">
+          <h1 className="text-5xl lg:text-7xl font-bold text-white mb-6 leading-tight">Premium Hair Replacement</h1>
+          <p className="text-xl text-white/80">Confidence. Precision. Realism.</p>
         </div>
 
-        {/* Right Visual Side */}
-        {/* Right Visual Side */}
-        <div className="hriC-visual-right">
-          <div className="hriC-visual-wrapper" id="hriC-3d-wrap">
-
-            <div className="hriC-main-image-frame">
-              {/* Image 1 */}
-              <img
-                className="hriC-image image-front"
-                src="/1rev.png"
-                alt="Image One"
-              />
-
-              {/* Image 2 */}
-              <img
-                className="hriC-image image-back"
-                src="/2rev.png"
-                alt="Image Two"
-              />
-            </div>
-
+        <div className="hero-right w-1/2 h-3/4 flex items-center justify-end">
+          <div ref={imageRef} className="hero-image w-full h-full max-w-md lg:max-w-2xl">
+            <img 
+              src="/1rev.png" 
+              alt="Hero" 
+              className="w-full h-full object-cover rounded-3xl shadow-2xl"
+            />
           </div>
         </div>
-
-
-
       </section>
-      <HairReplacementQA />
+
+      <section ref={nextRef} className="next-section min-h-screen py-20 px-8 lg:px-20 bg-gradient-to-r from-slate-800 to-purple-900/20 flex items-center justify-between">
+        <div className="next-left w-1/2 h-96 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-3xl shadow-xl" />
+        <div className="next-right max-w-lg">
+          <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">What Is Hair Replacement?</h2>
+          <p className="text-xl text-white/90 leading-relaxed">
+            A non-surgical cosmetic solution designed to restore natural appearance.
+          </p>
+        </div>
+      </section>
+
+      <section className="content-section min-h-screen py-20 px-8 lg:px-20 bg-slate-900">
+        <h2 className="text-4xl font-bold text-white text-center">More Information</h2>
+        <p className="text-xl text-white/80 mt-8 text-center max-w-2xl mx-auto">
+          Additional content sections will scroll in naturally after the pinned hero animation completes.[web:14]
+        </p>
+      </section>
     </div>
   );
 }

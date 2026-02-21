@@ -5,6 +5,8 @@ import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
+
+
 // import "@fortawesome/fontawesome-free/css/all.min.css";
 
 const geistSans = Geist({
@@ -25,6 +27,7 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+
         <Navbar />
         {children}
         <Footer />

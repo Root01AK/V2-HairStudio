@@ -49,16 +49,17 @@ export default function Navbar() {
           </nav>
 
           <div className="nav-cta">
-            <a href="tel:+919999999999" className="btn-outline">Call Us</a>
-            <Link href="/V2-Book" className="btn-primary">Book Free Consultation</Link>
+            <a href="tel:+919999999999" id="call-btn" className="btn-outline">Call Us</a>
+            <Link href="/V2-Book" id="book-btn" className="btn-primary">Book Free Consultation</Link>
           </div>
         </div>
       </header>
 
       {/* MEGA MENU */}
       <div className={`nav-modal ${open ? "open" : ""}`}>
-
-        <button className="close" onClick={() => setOpen(false)}>✕</button>
+        <div className="closecircle">
+          <button className="close" onClick={() => setOpen(false)}>✕</button>
+        </div>
 
         <div className="nav-grid">
 
@@ -196,7 +197,7 @@ export default function Navbar() {
               <>
                 <h3>Contact</h3>
                 <ul>
-                  <li><Link href="/V2-Book">Book Free Consultation</Link></li>
+                  <li><Link href="/Contact">Book Free Consultation</Link></li>
                   <li><Link href="/Contact#location">Location</Link></li>
                   <li><Link href="/Contact#faq">FAQ</Link></li>
                 </ul>
