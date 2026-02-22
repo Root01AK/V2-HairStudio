@@ -1,0 +1,227 @@
+"use client";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+
+export default function Navbar() {
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("home");
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 900);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+  return (
+    <>
+      {/* TOP BAR */}
+      <header className="navbar">
+        <div className="nav-left-inline">
+          <button className="hamburger" onClick={() => setOpen(true)}>
+            <img src="/v2-ham.png" alt="Menu" />
+          </button>
+
+
+          <nav className="nav-inline-links">
+            <Link href="/hair-replacement-in-chennai">Hair Replacement</Link>
+            <Link href="/hair-patch-for-men">Hair Patch</Link>
+            <Link href="/bridal-studio-chennai">Bridal Studio</Link>
+          </nav>
+
+        </div>
+
+        {/* LOGO */}
+        <div className="logo">
+          <Link href="/">
+            <img src="/logo-dark.png" alt="V2 Hair Studio" />
+          </Link>
+        </div>
+
+        {/* CTA */}
+        <div className="nav-right nav-mobile-group">
+          <nav className="nav-links">
+            <Link href="/haircare&skincare">Advanced Care</Link>
+            <Link href="/gallery">Gallery</Link>
+            <Link href="/contact">Contact</Link>
+          </nav>
+
+          <div className="nav-cta">
+            <Link href="/V2-Book" id="book-btn" className="btn-primary">Book Consultation</Link>
+          
+          </div>
+        </div>
+      </header>
+
+      {/* MEGA MENU */}
+      <div className={`nav-modal ${open ? "open" : ""}`}>
+        <div className="closecircle">
+          <button className="close" onClick={() => setOpen(false)}>✕</button>
+        </div>
+
+        <div className="nav-grid">
+
+          {/* LEFT */}
+          <div className="nav-left">
+            {[
+              { id: "home", label: "Home" },
+              { id: "story", label: "Our Story" },
+              { id: "hairReplacement", label: "Hair Replacement" },
+              { id: "hairPatch", label: "Hair Patch for Men" },
+              { id: "systemTypes", label: "Hair System Types" },
+              { id: "bridal", label: "Bridal Studio" },
+              { id: "care", label: "Hair Care & Skin Care" },
+              { id: "gallery", label: "Gallery" },
+              { id: "contact", label: "Contact" },
+            ].map(item => (
+              <p
+                key={item.id}
+                className={active === item.id ? "active" : ""}
+                onClick={() => {
+                  if (isMobile) {
+                    // navigate immediately
+                    window.location.href =
+                      item.id === "home" ? "/" :
+                        item.id === "story" ? "/ourstory" :
+                          item.id === "hairReplacement" ? "/hair-replacement-in-chennai" :
+                            item.id === "hairPatch" ? "/hair-patch-for-men" :
+                              item.id === "systemTypes" ? "/hair-system-types" :
+                                item.id === "bridal" ? "/bridal-studio-chennai" :
+                                  item.id === "care" ? "/haircare&skincare" :
+                                    item.id === "gallery" ? "/gallery" :
+                                      item.id === "contact" ? "/contact" :
+                                        "/";
+                  } else {
+                    // desktop → only open right panel
+                    setActive(item.id);
+                  }
+                }}
+              >
+                {item.label}
+              </p>
+            ))}
+          </div>
+
+          {/* CENTER */}
+          <div className="nav-center" >
+
+            {active === "home" && (
+              <>
+                <h3>Home</h3>
+                <ul>
+                  <li><Link href="/#results">Results</Link></li>
+                  <li><Link href="/#process">Process</Link></li>
+                  <li><Link href="/#why-us">Why Choose Us</Link></li>
+                  <li><Link href="/#testimonials">Testimonials</Link></li>
+                </ul>
+              </>
+            )}
+
+            {active === "story" && (
+              <>
+                <h3>Our Story</h3>
+                <ul>
+                  <li><Link href="/ourstory">Our Story</Link></li>
+                  <li><Link href="/ourstory#difference">What Makes V2 Different</Link></li>
+                  <li><Link href="/ourstory#quality">Our Service Quality</Link></li>
+                </ul>
+              </>
+            )}
+
+            {active === "hairReplacement" && (
+              <>
+                <h3>Hair Replacement in Chennai</h3>
+                <ul>
+                  <li><Link href="/hair-replacement-in-chennai#process">Our Process</Link></li>
+                  <li><Link href="/hair-replacement-in-chennai#results">Results</Link></li>
+                  <li><Link href="/hair-replacement-in-chennai#why-us">Why Us</Link></li>
+                  <li><Link href="/hair-replacement-in-chennai#cost">Cost</Link></li>
+                  <li><Link href="/hair-replacement-in-chennai#faq">FAQ</Link></li>
+                </ul>
+              </>
+            )}
+
+            {active === "hairPatch" && (
+              <>
+                <h3>Hair Patch for Men</h3>
+                <ul>
+                  <li><Link href="/hair-patch-for-men#features">What Makes Our Hair Patch</Link></li>
+                  <li><Link href="/hair-patch-for-men#benefits">Key Benefits</Link></li>
+                </ul>
+              </>
+            )}
+
+            {active === "systemTypes" && (
+              <>
+                <h3>Hair System Types</h3>
+                <ul>
+                  <li><Link href="/hair-system-types#skin">Skin Hair System</Link></li>
+                  <li><Link href="/hair-system-types#lace">Full Lace Hair System</Link></li>
+                </ul>
+              </>
+            )}
+
+            {active === "bridal" && (
+              <>
+                <h3>Bridal Studio</h3>
+                <ul>
+                  <li><Link href="/bridal-studio-chennai#approach">Our Approach</Link></li>
+                  <li><Link href="/bridal-studio-chennai#services">Bridal Services</Link></li>
+                  <li><Link href="/bridal-studio-chennai#gallery">Gallery</Link></li>
+                </ul>
+              </>
+            )}
+
+            {active === "care" && (
+              <>
+                <h3>Hair & Skin Care</h3>
+                <ul>
+                  <li><Link href="/haircare&skincare">Hair Care Services</Link></li>
+                  <li><Link href="/haircare&skincare">Skin Care Services</Link></li>
+                </ul>
+              </>
+            )}
+
+            {active === "gallery" && (
+              <>
+                <h3>Gallery</h3>
+                <ul>
+                  <li><Link href="/gallery">Explore More</Link></li>
+                </ul>
+              </>
+            )}
+
+            {active === "contact" && (
+              <>
+                <h3>Contact</h3>
+                <ul>
+                  <li><Link href="/contact">Book Free Consultation</Link></li>
+                  <li><Link href="/contact#location">Location</Link></li>
+                  <li><Link href="/contact#faq">FAQ</Link></li>
+                </ul>
+              </>
+            )}
+
+          </div>
+
+          {/* RIGHT */}
+          <div className="nav-preview-wrapper">
+            <div className="nav-preview">
+              <img src={`/images/nav/${active}.jpg`} alt={active} />
+              <div className="preview-content">
+                <h4>Experience V2 Hair Studio</h4>
+                <p>Premium non-surgical solutions · Chennai</p>
+                <Link href="/V2-Book" className="btn-primary">Book Consultation</Link>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </>
+  );
+}
