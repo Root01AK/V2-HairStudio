@@ -37,17 +37,17 @@ const QA_ITEMS = [
 ];
 
 export default function HairReplacementQA() {
-  const sectionRef  = useRef(null);
-  const headingRef  = useRef(null);
-  const ruleRef     = useRef(null);
-  const subRef      = useRef(null);
+  const sectionRef = useRef(null);
+  const headingRef = useRef(null);
+  const ruleRef    = useRef(null);
+  const subRef     = useRef(null);
 
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
     const ctx = gsap.context(() => {
 
-      // ── SECTION HEADING REVEAL ──────────────────────────────────────────────
+      // ── HEADING REVEAL ───────────────────────────────────────────────────────
       const headingTl = gsap.timeline({
         scrollTrigger: {
           trigger: headingRef.current,
@@ -57,123 +57,62 @@ export default function HairReplacementQA() {
       });
 
       headingTl
-        .from(".qa-eyebrow", {
-          y: 20, opacity: 0, duration: 0.6, ease: "power3.out",
-        })
-        .from(ruleRef.current, {
-          scaleX: 0, duration: 0.7, ease: "power3.inOut", transformOrigin: "left center",
-        }, "-=0.3")
-        .from(".qa-heading-word", {
-          y: 60, opacity: 0, duration: 0.9, ease: "power3.out", stagger: 0.08,
-        }, "-=0.4")
-        .from(subRef.current, {
-          y: 24, opacity: 0, duration: 0.7, ease: "power2.out",
-        }, "-=0.4");
+        .from(".qa-eyebrow",      { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" })
+        .from(ruleRef.current,    { scaleX: 0, duration: 0.7, ease: "power3.inOut", transformOrigin: "left center" }, "-=0.3")
+        .from(".qa-heading-word", { y: 60, opacity: 0, duration: 0.9, ease: "power3.out", stagger: 0.08 }, "-=0.4")
+        .from(subRef.current,     { y: 24, opacity: 0, duration: 0.7, ease: "power2.out" }, "-=0.4");
 
-      // ── CARDS ───────────────────────────────────────────────────────────────
+      // ── CARDS ────────────────────────────────────────────────────────────────
       const cards = gsap.utils.toArray(".qa-landscape-card");
 
       cards.forEach((card, i) => {
         const isEven = i % 2 === 0;
 
-        // card enter
-        gsap.fromTo(
-          card,
+        gsap.fromTo(card,
           { y: 90, opacity: 0, scale: 0.97, x: isEven ? -20 : 20 },
           {
             y: 0, opacity: 1, scale: 1, x: 0,
-            duration: 1.1,
-            ease: "power3.out",
-            delay: i * 0.06,
-            scrollTrigger: {
-              trigger: card,
-              start: "top 82%",
-              toggleActions: "play none none reverse",
-            },
+            duration: 1.1, ease: "power3.out", delay: i * 0.06,
+            scrollTrigger: { trigger: card, start: "top 82%", toggleActions: "play none none reverse" },
           }
         );
 
-        // index counter count-up
         const indexEl = card.querySelector(".qa-card-index");
         if (indexEl) {
           gsap.from(indexEl, {
-            opacity: 0,
-            scale: 0.6,
-            duration: 0.8,
-            ease: "back.out(1.6)",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 82%",
-              toggleActions: "play none none reverse",
-            },
+            opacity: 0, scale: 0.6, duration: 0.8, ease: "back.out(1.6)",
+            scrollTrigger: { trigger: card, start: "top 82%", toggleActions: "play none none reverse" },
           });
         }
 
-        // line draw on the card
         const line = card.querySelector(".qa-card-line");
         if (line) {
-          gsap.fromTo(
-            line,
-            { scaleY: 0 },
-            {
-              scaleY: 1,
-              duration: 1,
-              ease: "power3.inOut",
-              transformOrigin: "top center",
-              scrollTrigger: {
-                trigger: card,
-                start: "top 82%",
-                toggleActions: "play none none reverse",
-              },
-            }
-          );
+          gsap.fromTo(line, { scaleY: 0 }, {
+            scaleY: 1, duration: 1, ease: "power3.inOut", transformOrigin: "top center",
+            scrollTrigger: { trigger: card, start: "top 82%", toggleActions: "play none none reverse" },
+          });
         }
 
-        // text stagger inside card
         const inner = card.querySelectorAll(".qa-card-tag, h2, p");
         gsap.from(inner, {
-          y: 30,
-          opacity: 0,
-          duration: 0.7,
-          stagger: 0.1,
-          ease: "power2.out",
-          delay: 0.25,
-          scrollTrigger: {
-            trigger: card,
-            start: "top 82%",
-            toggleActions: "play none none reverse",
-          },
+          y: 30, opacity: 0, duration: 0.7, stagger: 0.1, ease: "power2.out", delay: 0.25,
+          scrollTrigger: { trigger: card, start: "top 82%", toggleActions: "play none none reverse" },
         });
       });
 
-      // ── AMBIENT ORB PARALLAX ────────────────────────────────────────────────
+      // ── ORB PARALLAX ─────────────────────────────────────────────────────────
       gsap.to(".qa-orb-1", {
-        y: -60,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1.5,
-        },
+        y: -60, ease: "none",
+        scrollTrigger: { trigger: sectionRef.current, start: "top bottom", end: "bottom top", scrub: 1.5 },
       });
       gsap.to(".qa-orb-2", {
-        y: 80,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 2,
-        },
+        y: 80, ease: "none",
+        scrollTrigger: { trigger: sectionRef.current, start: "top bottom", end: "bottom top", scrub: 2 },
       });
 
     }, sectionRef);
 
-    return () => {
-      ctx.revert();
-      ScrollTrigger.refresh();
-    };
+    return () => { ctx.revert(); ScrollTrigger.refresh(); };
   }, []);
 
   return (
@@ -181,6 +120,9 @@ export default function HairReplacementQA() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400&display=swap');
 
+        /* ─────────────────────────────────────────
+           SECTION — deep warm dark (matches charcoal)
+        ───────────────────────────────────────── */
         .qa-section {
           position: relative;
           padding: 120px 0 140px;
@@ -189,27 +131,7 @@ export default function HairReplacementQA() {
           font-family: 'DM Sans', sans-serif;
         }
 
-        /* ── ambient orbs ── */
-        .qa-orb-1,
-        .qa-orb-2 {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(90px);
-          pointer-events: none;
-          z-index: 0;
-        }
-        .qa-orb-1 {
-          width: 480px; height: 480px;
-          top: -80px; left: -120px;
-          background: radial-gradient(circle, rgba(184,147,90,0.07) 0%, transparent 70%);
-        }
-        .qa-orb-2 {
-          width: 360px; height: 360px;
-          bottom: 60px; right: -60px;
-          background: radial-gradient(circle, rgba(184,147,90,0.05) 0%, transparent 70%);
-        }
-
-        /* ── grain texture ── */
+        /* grain */
         .qa-section::before {
           content: '';
           position: absolute;
@@ -220,7 +142,36 @@ export default function HairReplacementQA() {
           z-index: 0;
         }
 
-        /* ── container ── */
+        /* top coral accent line */
+        .qa-section::after {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, #ef6548, transparent);
+          opacity: 0.55;
+        }
+
+        /* ── ORBS — coral + burgundy ── */
+        .qa-orb-1, .qa-orb-2 {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(90px);
+          pointer-events: none;
+          z-index: 0;
+        }
+        .qa-orb-1 {
+          width: 480px; height: 480px;
+          top: -80px; left: -120px;
+          background: radial-gradient(circle, rgba(239,101,72,0.1) 0%, transparent 70%);
+        }
+        .qa-orb-2 {
+          width: 360px; height: 360px;
+          bottom: 60px; right: -60px;
+          background: radial-gradient(circle, rgba(127,53,47,0.14) 0%, transparent 70%);
+        }
+
+        /* ── INNER ── */
         .qa-inner {
           position: relative;
           z-index: 1;
@@ -229,10 +180,8 @@ export default function HairReplacementQA() {
           padding: 0 6vw;
         }
 
-        /* ── heading block ── */
-        .qa-heading-block {
-          margin-bottom: 80px;
-        }
+        /* ── HEADING ── */
+        .qa-heading-block { margin-bottom: 80px; }
 
         .qa-eyebrow {
           display: inline-flex;
@@ -242,25 +191,26 @@ export default function HairReplacementQA() {
         }
         .qa-eyebrow-line {
           display: block;
-          width: 28px;
-          height: 1px;
-          background: #b8935a;
-          opacity: 0.75;
+          width: 28px; height: 1px;
+          background: #ef6548;
+          opacity: 0.8;
         }
         .qa-eyebrow-text {
           font-size: 9.5px;
           font-weight: 300;
           letter-spacing: 0.42em;
           text-transform: uppercase;
-          color: #b8935a;
+          color: #ef6548;
         }
 
+        /* heading rule — coral gradient */
         .qa-heading-rule {
           width: 100%;
-          height: 1px;
-          background: linear-gradient(90deg, rgba(184,147,90,0.35), transparent);
+          height: 2px;
+          background: linear-gradient(90deg, rgba(239,101,72,0.45), transparent);
           margin-bottom: 32px;
           transform-origin: left center;
+          border-radius: 1px;
         }
 
         .qa-heading-words {
@@ -273,22 +223,24 @@ export default function HairReplacementQA() {
           font-weight: 300;
           line-height: 1.02;
           letter-spacing: -0.015em;
-          color: #e4e0d8;
+          color: #ffffff;
           display: flex;
           flex-wrap: wrap;
           gap: 0 0.28em;
         }
         .qa-heading-word { display: inline-block; }
+        /* em — peach (gold-lt equivalent) */
         .qa-heading-title em {
           font-style: italic;
-          color: #d4b483;
+          color: #f5a48e;
         }
 
+        /* subtext — warm dust */
         .qa-sub {
           font-size: 13px;
           font-weight: 200;
           line-height: 2;
-          color: #5a5a6e;
+          color: #f1ccb9;
           max-width: 420px;
         }
 
@@ -298,125 +250,132 @@ export default function HairReplacementQA() {
           grid-template-columns: 1fr 1fr;
           gap: 2px;
         }
-
         @media (max-width: 768px) {
           .qa-landscape-container { grid-template-columns: 1fr; }
         }
 
-        /* ── SINGLE CARD ── */
+        /* ── CARD — deep warm dark ── */
         .qa-landscape-card {
           position: relative;
-          background: #ffffffff;
-          border: 1px solid rgba(184,147,90,0.08);
+          background: #1c0f0c;
+          border: 1px solid rgba(239,101,72,0.09);
           padding: 52px 48px 48px;
           overflow: hidden;
           cursor: default;
           transition: border-color 0.4s ease, background 0.4s ease;
+          border-radius:30px;
         }
         .qa-landscape-card:hover {
-          border-color: rgba(184,147,90,0.22);
-          background: #111120;
+          border-color: rgba(239,101,72,0.28);
+          background: #1c0f0c;
         }
 
-        /* hover shimmer */
+        /* hover shimmer — coral wash */
         .qa-landscape-card::after {
           content: '';
           position: absolute;
           inset: 0;
-          background: linear-gradient(135deg, rgba(184,147,90,0.0) 0%, rgba(184,147,90,0.04) 100%);
+          background: linear-gradient(135deg, rgba(239,101,72,0.0) 0%, rgba(239,101,72,0.055) 100%);
           opacity: 0;
           transition: opacity 0.5s ease;
           pointer-events: none;
         }
         .qa-landscape-card:hover::after { opacity: 1; }
 
-        /* left accent line */
+        /* left accent line — coral */
         .qa-card-line {
           position: absolute;
           left: 0; top: 0; bottom: 0;
-          width: 1px;
-          background: linear-gradient(to bottom, var(--gold-color, #b8935a), transparent);
+          width: 4px;
+          background: #f1ccb9;
           transform-origin: top center;
-          opacity: 0.45;
+          opacity: 0.55;
+          border-radius: 0 1px 1px 0;
         }
 
-        /* corner accent */
+        /* corner bracket — coral */
         .qa-card-corner {
           position: absolute;
           top: 20px; right: 20px;
           width: 18px; height: 18px;
-          border-top: 1px solid rgba(184,147,90,0.2);
-          border-right: 1px solid rgba(184,147,90,0.2);
+          border-top: 1px solid rgba(239,101,72,0.28);
+          border-right: 1px solid rgba(239,101,72,0.28);
         }
 
-        /* index number */
+        /* ghost index — secondary-dark tint */
         .qa-card-index {
           font-family: 'Cormorant Garamond', serif;
           font-size: 72px;
           font-weight: 300;
           line-height: 1;
-          color: rgba(184,147,90,0.07);
+          color: rgba(127,53,47,0.2);
           position: absolute;
-          right: 40px;
-          bottom: 24px;
+          right: 40px; bottom: 24px;
           letter-spacing: -0.04em;
           pointer-events: none;
           user-select: none;
         }
 
-        /* tag pill */
+        /* tag pill — coral */
         .qa-card-tag {
           display: inline-block;
           font-size: 8.5px;
           font-weight: 300;
           letter-spacing: 0.35em;
           text-transform: uppercase;
-          color: #b8935a;
-          border: 1px solid rgba(184,147,90,0.2);
+          color: #ef6548;
+          border: 1px solid rgba(239,101,72,0.22);
           padding: 5px 12px;
           border-radius: 2px;
           margin-bottom: 28px;
-          background: rgba(184,147,90,0.04);
+          background: rgba(239,101,72,0.06);
         }
 
-        /* question */
+        /* question — white, hover peach */
         .qa-landscape-card h2 {
           font-family: 'Cormorant Garamond', serif;
           font-size: clamp(26px, 2.4vw, 38px);
           font-weight: 300;
           line-height: 1.15;
           letter-spacing: -0.01em;
-          color: #e4e0d8;
+          color: #ffffff;
           margin-bottom: 20px;
+          transition: color 0.3s ease;
         }
+        .qa-landscape-card:hover h2 { color: #f5a48e; }
 
-        /* answer */
+        /* answer — warm dust */
         .qa-landscape-card p {
           font-size: 13px;
           font-weight: 200;
           line-height: 2;
-          color: #5a5a6e;
+          color: #7a5c55;
           max-width: 360px;
+          transition: color 0.3s ease;
+        }
+        .qa-landscape-card:hover p { color: #8a6c65; }
+
+        /* subtle bottom borders */
+        .qa-landscape-card:nth-child(1),
+        .qa-landscape-card:nth-child(2) {
+          border-bottom-color: rgba(239,101,72,0.05);
         }
 
-        /* ── bottom border light ── */
-        .qa-landscape-card:nth-child(1) { border-bottom-color: rgba(184,147,90,0.04); }
-        .qa-landscape-card:nth-child(2) { border-bottom-color: rgba(184,147,90,0.04); }
-
-        /* ── section bottom rule ── */
+        /* ── BOTTOM RULE — coral ── */
         .qa-bottom-rule {
           margin-top: 80px;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(184,147,90,0.2), transparent);
+          height: 2px;
+          background: linear-gradient(90deg, transparent, rgba(239,101,72,0.35), transparent);
+          border-radius: 1px;
         }
       `}</style>
 
       <section ref={sectionRef} className="qa-section">
-        {/* Ambient orbs */}
         <div className="qa-orb-1" />
         <div className="qa-orb-2" />
 
         <div className="qa-inner">
+
           {/* ── HEADING ── */}
           <div className="qa-heading-block" ref={headingRef}>
             <div className="qa-eyebrow">
@@ -446,13 +405,8 @@ export default function HairReplacementQA() {
           <div className="qa-landscape-container">
             {QA_ITEMS.map((item) => (
               <div key={item.index} className="qa-landscape-card">
-                {/* Left accent line */}
                 <div className="qa-card-line" />
-
-                {/* Corner accent */}
                 <div className="qa-card-corner" />
-
-                {/* Large ghost index */}
                 <span className="qa-card-index">{item.index}</span>
 
                 <div className="qa-landscape-content">

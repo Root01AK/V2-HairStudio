@@ -168,8 +168,8 @@ export default function ProcessStrip() {
         /* ── PROCESS STRIP ─────────────────────────────────────── */
         .ps-section {
           position: relative;
-          padding: 130px 0 150px;
-          background: #0b0b12;
+          padding: 80px 0 150px;
+          background: #ffffff;
           overflow: hidden;
           font-family: 'DM Sans', sans-serif;
         }
@@ -238,37 +238,13 @@ export default function ProcessStrip() {
           font-weight: 300;
           letter-spacing: 0.44em;
           text-transform: uppercase;
-          color: #b8935a;
+          color: #7f352f;
         }
         .ps-eyebrow-dot {
           width: 4px; height: 4px;
           border-radius: 50%;
-          background: #b8935a;
+          background: #7f352f;
           opacity: 0.6;
-        }
-
-        .ps-rule-wrap {
-          display: flex;
-          align-items: center;
-          gap: 20px;
-          justify-content: center;
-          margin-bottom: 28px;
-        }
-        .ps-rule-left,
-        .ps-rule-right {
-          flex: 1;
-          max-width: 180px;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(184,147,90,0.35));
-        }
-        .ps-rule-right {
-          background: linear-gradient(90deg, rgba(184,147,90,0.35), transparent);
-        }
-        .ps-rule-diamond {
-          width: 5px; height: 5px;
-          border: 1px solid rgba(184,147,90,0.5);
-          transform: rotate(45deg);
-          flex-shrink: 0;
         }
 
         .ps-title {
@@ -277,12 +253,12 @@ export default function ProcessStrip() {
           font-weight: 300;
           line-height: 1.06;
           letter-spacing: -0.015em;
-          color: #e4e0d8;
+          color: #f1ccb9;
           margin-bottom: 20px;
         }
         .ps-title em {
           font-style: italic;
-          color: #d4b483;
+          color: #7f352f;
         }
 
         .ps-sub {
@@ -381,12 +357,12 @@ export default function ProcessStrip() {
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #b8935a;
+          color: #ef6548;
           transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
         }
         .ps-step:hover .ps-icon-circle {
           background: #14141f;
-          border-color: rgba(184,147,90,0.35);
+          border-color:#ef6548;
           box-shadow: 0 0 28px rgba(184,147,90,0.1), inset 0 0 20px rgba(184,147,90,0.04);
         }
 
@@ -396,7 +372,7 @@ export default function ProcessStrip() {
           top: -4px; right: -4px;
           width: 22px; height: 22px;
           border-radius: 50%;
-          background: #b8935a;
+          background: #7f352f;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -404,7 +380,7 @@ export default function ProcessStrip() {
           font-size: 9px;
           font-weight: 400;
           letter-spacing: 0.02em;
-          color: #09090e;
+          color: #ffffffff;
           z-index: 2;
         }
 
@@ -414,11 +390,11 @@ export default function ProcessStrip() {
           font-size: 22px;
           font-weight: 300;
           letter-spacing: -0.01em;
-          color: #e4e0d8;
+          color: #ef6548;
           margin-bottom: 14px;
           transition: color 0.3s ease;
         }
-        .ps-step:hover .ps-step-title { color: #d4b483; }
+        .ps-step:hover .ps-step-title { color: #7f352f; }
 
         .ps-step-desc {
           font-size: 12.5px;
@@ -443,12 +419,6 @@ export default function ProcessStrip() {
               <span className="ps-eyebrow-dot" />
               Our Process
               <span className="ps-eyebrow-dot" />
-            </div>
-
-            <div className="ps-rule-wrap">
-              <div className="ps-rule-left" />
-              <div className="ps-rule-diamond" />
-              <div className="ps-rule-right" />
             </div>
 
             <h2 className="ps-title">

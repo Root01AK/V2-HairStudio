@@ -1,47 +1,38 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import HairReplacementQA from "../components/HairReplacementQA";
-
+import Image from "next/image";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function PremiumScrollTransition() {
-  const wrapperRef = useRef(null);
-
-  // Refs — hero
-  const heroSectionRef   = useRef(null);
-  const heroTextRef      = useRef(null);
-  const heroImageRef     = useRef(null); // the travelling image
-
-  // Refs — next section
-  const nextSectionRef   = useRef(null);
-  const nextFrameRef     = useRef(null); // the destination frame the image lands in
-  const nextTextRef      = useRef(null);
+  const wrapperRef     = useRef(null);
+  const heroSectionRef = useRef(null);
+  const heroTextRef    = useRef(null);
+  const heroImageRef   = useRef(null);
+  const nextSectionRef = useRef(null);
+  const nextTextRef    = useRef(null);
 
   useGSAP(() => {
-    //
-    // ─── SHARED SCROLL DRIVER ───────────────────────────────────────────────────
-    // One timeline scrubbed by a single ScrollTrigger.
-    // scrub: 2 → very slow, syrupy, premium feel
-    //
+    // Re-calculate on every refresh so vw-based positions stay accurate
+    ScrollTrigger.config({ invalidateOnRefresh: true });
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: wrapperRef.current,
         start: "top top",
-        end: "+=300%",           // 3× viewport of scroll = very slow transition
-        scrub: 2,                // 2s lag = cinematic butter
+        end: "+=250%",
+        scrub: 1.5,
         pin: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
       },
     });
 
-    // ─── PHASE 1 (progress 0 → 0.35) ────────────────────────────────────────────
-    // Next section rises from below — slides up like a page surfacing
-    // It starts fully off-screen (y: 100vh) and settles at y: 0
+    // ── 1. Dark panel slides up ──────────────────────────────────────────────
     tl.fromTo(
       nextSectionRef.current,
       { yPercent: 100 },
@@ -49,71 +40,47 @@ export default function PremiumScrollTransition() {
       0
     );
 
-    // ─── PHASE 1 — Hero text recedes (pushes back slightly, fades gently) ───────
+    // ── 2. Hero text exits upward ────────────────────────────────────────────
     tl.to(
       heroTextRef.current,
-      { y: -60, opacity: 0, ease: "power2.inOut", duration: 0.8 },
+      { y: -80, opacity: 0, ease: "power2.inOut", duration: 0.7 },
       0
     );
 
-    // ─── PHASE 2 (progress 0 → 0.9) — IMAGE TRAVELS ─────────────────────────────
-    // The image starts in the hero (right side, large).
-    // It needs to land inside nextFrameRef (left side of next section, smaller).
+    // ── 3. IMAGE DOCKING ─────────────────────────────────────────────────────
+    // The image starts at: left = 52.5vw (right column of hero)
+    // It must land at:     left = 7vw   (left column of dark section)
+    // 
+    // Distance to travel = 52.5vw - 7vw = 45.5vw  (move LEFT)
+    // Image element width = calc(50vw - 9.5vw) ≈ 40.5vw
+    // xPercent = -(45.5 / 40.5) * 100 ≈ -112%
     //
-    // Because the image is absolutely positioned during travel via GSAP,
-    // we animate it from its hero position to the frame's position.
-    // We use xPercent/yPercent + scale so it works at all viewport sizes.
-    //
+    // The destination frame is 72vh tall, image starts at 78vh
+    // scale = 72/78 ≈ 0.923
+    // No yPercent adjustment needed since both are vertically centred via top:50%
+    // ─────────────────────────────────────────────────────────────────────────
     tl.to(
       heroImageRef.current,
       {
-        // Moves left across the screen and up a touch to land in frame
-        xPercent: -115,
-        yPercent: -18,
-        scale: 0.52,
-        ease: "power1.inOut",  // very linear = feels like physics, not animation
+        xPercent: -112,
+        scale: 0.923,
+        ease: "power2.inOut",
         duration: 1,
       },
-      0.05  // slight delay so section starts rising before image lifts
+      0
     );
 
-    // ─── PHASE 3 (progress 0.5 → 1) — Next section content reveals ──────────────
-    tl.from(
-      ".ns-eyebrow",
-      { y: 30, opacity: 0, ease: "power2.out", duration: 0.4 },
-      0.55
-    );
-    tl.from(
-      ".ns-title",
-      { y: 50, opacity: 0, ease: "power2.out", duration: 0.5 },
-      0.6
-    );
-    tl.from(
-      ".ns-rule",
-      { scaleX: 0, opacity: 0, ease: "power2.out", duration: 0.35, transformOrigin: "left center" },
-      0.68
-    );
-    tl.from(
-      ".ns-body",
-      { y: 30, opacity: 0, ease: "power2.out", duration: 0.4 },
-      0.72
-    );
-    tl.from(
-      ".ns-pill",
-      { y: 20, opacity: 0, stagger: 0.05, ease: "power2.out", duration: 0.3 },
-      0.78
-    );
+    // ── 4. Dark section text animates in (right column) ──────────────────────
+    tl.from(".ns-eyebrow", { y: 30, opacity: 0, ease: "power2.out", duration: 0.4 }, 0.5);
+    tl.from(".ns-title",   { y: 45, opacity: 0, ease: "power2.out", duration: 0.5 }, 0.55);
+    tl.from(".ns-rule",    { scaleX: 0, opacity: 0, transformOrigin: "left center", ease: "power2.out", duration: 0.3 }, 0.63);
+    tl.from(".ns-body",    { y: 25, opacity: 0, ease: "power2.out", duration: 0.4 }, 0.67);
+    tl.from(".ns-pill",    { y: 18, opacity: 0, stagger: 0.04, ease: "power2.out", duration: 0.3 }, 0.73);
 
-    // ─── Hero section fades out very late — never abruptly hidden ────────────────
-    tl.to(
-      heroSectionRef.current,
-      { opacity: 0, duration: 0.25, ease: "power1.in" },
-      0.75
-    );
+    // ── 5. Hero section fades out fully ─────────────────────────────────────
+    tl.to(heroSectionRef.current, { opacity: 0, duration: 0.2, ease: "power1.in" }, 0.72);
 
   }, { scope: wrapperRef });
-
-  const features = ["100% Human Hair", "Undetectable Bond", "Same-Day Fit", "Custom Density"];
 
   return (
     <>
@@ -123,419 +90,378 @@ export default function PremiumScrollTransition() {
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-          --cream:   #f5f0e8;
-          --warm:    #e8dfd0;
-          --ink:     #0e0c0a;
-          --charcoal:#1c1a17;
-          --stone:   #3a3530;
-          --dust:    #7a7060;
-          --gold:    #b8935a;
-          --gold-lt: #d4b483;
-          --serif:   'Playfair Display', Georgia, serif;
-          --sans:    'DM Sans', sans-serif;
+          --primary:        #ef6548;
+          --secondary-dark: #7f352f;
+          --soft-bg:        #f1ccb9;
+          --white:          #ffffff;
+          --text-dark:      #111111;
+          --cream:          #fdf8f5;
+          --charcoal:       #1a0e0b;
+          --dust:           #7a5c55;
+          --gold-lt:        #f5a48e;
+          --serif:          'Playfair Display', Georgia, serif;
+          --sans:           'DM Sans', sans-serif;
         }
 
-        html, body {
-          background: var(--ink);
-          overflow-x: hidden;
-        }
+        html, body { background: var(--charcoal); overflow-x: hidden; }
 
-        /* Grain overlay */
         body::before {
           content: '';
-          position: fixed;
-          inset: 0;
+          position: fixed; inset: 0;
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.035'/%3E%3C/svg%3E");
-          pointer-events: none;
-          z-index: 9999;
-          mix-blend-mode: overlay;
-          opacity: 0.5;
+          pointer-events: none; z-index: 9999;
+          mix-blend-mode: overlay; opacity: 0.5;
+        }
+
+        @keyframes drip {
+          0%, 100% { opacity: .2; transform: scaleY(1); }
+          50%       { opacity: 1; transform: scaleY(0.55); transform-origin: top; }
         }
       `}</style>
 
       {/*
-        ─── OUTER WRAPPER ─────────────────────────────────────────────────────────
-        GSAP pins THIS element. Height is just 100vh — GSAP adds scroll distance.
+        ══════════════════════════════════════════════════════════
+        Z-INDEX MAP:
+          z:1   Hero section (cream)
+          z:10  Dark section (charcoal) — slides up over hero
+          z:20  Floating image — free to travel across both
+          z:40  Dark section text column — always on top
+        ══════════════════════════════════════════════════════════
       */}
-      <div ref={wrapperRef} style={{ height: "100vh", overflow: "hidden", position: "relative" }}>
+      <div
+        ref={wrapperRef}
+        style={{ height: "100vh", overflow: "hidden", position: "relative" }}
+      >
 
-        {/* ════════════════════════════════════════════════
-            HERO SECTION
-            Full-screen, z-index 1 (behind next section)
-        ════════════════════════════════════════════════ */}
+        {/* ══════════════════════════════════
+            HERO — cream bg
+            Layout: LEFT [text] | RIGHT [phantom — image floats here]
+        ══════════════════════════════════ */}
         <section
           ref={heroSectionRef}
           style={{
-            position: "absolute",
-            inset: 0,
-            zIndex: 1,
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            alignItems: "center",
-            padding: "0 7vw",
-            gap: "5vw",
+            position: "absolute", inset: 0, zIndex: 1,
+            display: "grid", gridTemplateColumns: "1fr 1fr",
+            alignItems: "center", padding: "0 7vw", gap: "5vw",
             background: "var(--cream)",
           }}
         >
-          {/* Warm vignette */}
+          {/* Blush glow */}
           <div style={{
             position: "absolute", inset: 0, pointerEvents: "none",
-            background: "radial-gradient(ellipse 80% 90% at 50% 50%, transparent 40%, rgba(14,12,10,0.18) 100%)",
+            background: "radial-gradient(ellipse 75% 80% at 65% 45%, rgba(241,204,185,0.55) 0%, transparent 65%)",
           }} />
-
-          {/* Top border */}
+          {/* Top line */}
           <div style={{
-            position: "absolute", top: 0, left: 0, right: 0, height: "1px",
-            background: "linear-gradient(90deg, transparent, var(--gold), transparent)",
-            opacity: 0.5,
+            position: "absolute", top: 0, left: 0, right: 0, height: "2px",
+            background: "linear-gradient(90deg, transparent, var(--primary), transparent)",
+            opacity: 0.7,
+          }} />
+          {/* Bottom strip */}
+          <div style={{
+            position: "absolute", bottom: 0, left: 0, width: "40%", height: "3px",
+            background: "var(--soft-bg)",
           }} />
 
-          {/* ── HERO LEFT — TEXT ── */}
+          {/* LEFT: Text */}
           <div ref={heroTextRef} style={{ position: "relative", zIndex: 2 }}>
-            {/* Eyebrow */}
-            <div style={{
-              display: "flex", alignItems: "center", gap: "12px", marginBottom: "32px",
-            }}>
-              <span style={{
-                display: "block", width: "28px", height: "1px",
-                background: "var(--gold)", opacity: 0.8,
-              }} />
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "32px" }}>
+              <span style={{ display: "block", width: "28px", height: "1px", background: "var(--primary)", opacity: 0.8 }} />
               <span style={{
                 fontFamily: "var(--sans)", fontSize: "9px", fontWeight: 300,
-                letterSpacing: "0.42em", textTransform: "uppercase", color: "var(--gold)",
-              }}>
-                Premium Hair Studio
-              </span>
+                letterSpacing: "0.42em", textTransform: "uppercase", color: "var(--primary)",
+              }}>Premium Hair Studio</span>
             </div>
 
-            {/* Title */}
             <h1 style={{
               fontFamily: "var(--serif)",
-              fontSize: "clamp(52px, 5.8vw, 96px)",
-              fontWeight: 300,
-              lineHeight: 1.0,
+              fontSize: "clamp(48px, 5.5vw, 90px)",
+              fontWeight: 300, lineHeight: 1.0,
               letterSpacing: "-0.015em",
-              color: "var(--ink)",
-              marginBottom: "32px",
+              color: "var(--text-dark)", marginBottom: "28px",
             }}>
               Restore<br />
-              <em style={{ fontStyle: "italic", color: "var(--stone)" }}>What&apos;s</em><br />
+              <em style={{ fontStyle: "italic", color: "var(--secondary-dark)" }}>What&apos;s</em><br />
               Yours
             </h1>
 
-            {/* Body */}
             <p style={{
               fontFamily: "var(--sans)", fontSize: "14px", fontWeight: 200,
-              lineHeight: 2, color: "var(--dust)", maxWidth: "320px", marginBottom: "48px",
+              lineHeight: 2, color: "var(--dust)", maxWidth: "320px", marginBottom: "44px",
             }}>
               Precision-crafted, non-surgical hair replacement engineered
               to move, breathe, and feel entirely your own.
             </p>
 
-            {/* CTA */}
             <a
               href="#"
               style={{
                 display: "inline-flex", alignItems: "center", gap: "16px",
                 fontFamily: "var(--sans)", fontSize: "10px", fontWeight: 400,
-                letterSpacing: "0.3em", textTransform: "uppercase",
-                color: "var(--ink)", textDecoration: "none",
-                paddingBottom: "10px",
-                borderBottom: "1px solid rgba(14,12,10,0.2)",
-                transition: "gap .4s, border-color .3s",
+                letterSpacing: "0.28em", textTransform: "uppercase",
+                color: "var(--white)", textDecoration: "none",
+                background: "var(--primary)",
+                padding: "15px 30px", borderRadius: "2px",
+                boxShadow: "0 8px 24px rgba(239,101,72,0.28)",
+                transition: "background 0.3s, gap 0.4s, box-shadow 0.3s",
               }}
-              onMouseEnter={e => { e.currentTarget.style.gap = "26px"; e.currentTarget.style.borderColor = "var(--ink)"; }}
-              onMouseLeave={e => { e.currentTarget.style.gap = "16px"; e.currentTarget.style.borderColor = "rgba(14,12,10,0.2)"; }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = "var(--secondary-dark)";
+                e.currentTarget.style.gap = "24px";
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = "var(--primary)";
+                e.currentTarget.style.gap = "16px";
+              }}
             >
               Book a Consultation
-              <svg width="20" height="8" viewBox="0 0 20 8" fill="none">
+              <svg width="18" height="8" viewBox="0 0 20 8" fill="none">
                 <path d="M0 4H18M15 1L19 4L15 7" stroke="currentColor" strokeWidth="0.75" />
               </svg>
             </a>
           </div>
 
-          {/* ── HERO RIGHT — TRAVELLING IMAGE ── */}
-          {/*
-            This is the image that will animate into the next section.
-            It stays in DOM at its hero position; GSAP translates + scales it.
-            We give it a very high z-index so it floats above BOTH sections during travel.
-          */}
-          <div
-            ref={heroImageRef}
-            style={{
-              position: "relative",
-              height: "78vh",
-              zIndex: 50,           // above both sections
-              willChange: "transform",
-            }}
-          >
-            {/* Offset frame accent */}
-            <div style={{
-              position: "absolute",
-              top: "-16px", right: "-16px", bottom: "16px", left: "16px",
-              border: "1px solid rgba(184,147,90,0.2)",
-              borderRadius: "3px",
-              zIndex: 0,
-            }} />
-
-            {/* The actual image box */}
-            <div style={{
-              position: "relative",
-              width: "100%",
-              height: "100%",
-              borderRadius: "3px",
-              overflow: "hidden",
-              background: "linear-gradient(155deg, #2a2520 0%, #3d3028 45%, #1e1a16 100%)",
-              boxShadow: "0 32px 80px rgba(14,12,10,0.35), 0 8px 24px rgba(14,12,10,0.2)",
-            }}>
-              {/*
-                ── REPLACE THIS DIV WITH YOUR IMAGE ──
-                <Image src="/1rev.png" alt="Hair" fill style={{ objectFit:"cover" }} priority />
-              */}
-              <div style={{
-                width: "100%", height: "100%",
-                display: "flex", flexDirection: "column",
-                alignItems: "center", justifyContent: "center", gap: "12px",
-              }}>
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                  <circle cx="16" cy="16" r="15" stroke="rgba(184,147,90,0.3)" strokeWidth="0.75" />
-                  <path d="M16 8v16M8 16h16" stroke="rgba(184,147,90,0.4)" strokeWidth="0.75" />
-                </svg>
-                <span style={{
-                  fontFamily: "var(--sans)", fontSize: "8.5px", letterSpacing: "0.35em",
-                  color: "rgba(184,147,90,0.35)", textTransform: "uppercase",
-                }}>
-                  Your Image
-                </span>
-              </div>
-
-              {/* Inner vignette */}
-              <div style={{
-                position: "absolute", inset: 0, pointerEvents: "none",
-                background: "linear-gradient(to bottom, transparent 50%, rgba(14,12,10,0.5) 100%)",
-              }} />
-            </div>
-          </div>
+          {/* RIGHT: phantom spacer */}
+          <div style={{ height: "78vh" }} />
 
           {/* Scroll indicator */}
           <div style={{
-            position: "absolute", bottom: "36px", left: "50%",
-            transform: "translateX(-50%)", display: "flex", flexDirection: "column",
-            alignItems: "center", gap: "10px", zIndex: 10,
+            position: "absolute", bottom: "32px", left: "50%",
+            transform: "translateX(-50%)",
+            display: "flex", flexDirection: "column", alignItems: "center", gap: "10px",
+            zIndex: 5,
           }}>
             <span style={{
               fontFamily: "var(--sans)", fontSize: "8.5px", letterSpacing: "0.38em",
               textTransform: "uppercase", color: "var(--dust)",
-            }}>
-              Scroll
-            </span>
+            }}>Scroll</span>
             <div style={{
               width: "1px", height: "54px",
-              background: "linear-gradient(to bottom, var(--gold), transparent)",
+              background: "linear-gradient(to bottom, var(--primary), transparent)",
               animation: "drip 2s ease-in-out infinite",
             }} />
           </div>
-
-          <style>{`
-            @keyframes drip {
-              0%,100% { opacity:.25; transform:scaleY(1); }
-              50%      { opacity:1;   transform:scaleY(0.55); transform-origin:top; }
-            }
-          `}</style>
         </section>
 
-
-        {/* ════════════════════════════════════════════════
-            NEXT SECTION
-            Starts at yPercent:100 (fully below viewport).
-            GSAP slides it up to yPercent:0.
-            z-index 10 — it covers the hero as it rises.
-        ════════════════════════════════════════════════ */}
+        {/* ══════════════════════════════════
+            DARK SECTION — charcoal bg
+            Layout: LEFT [ghost frame] | RIGHT [text — z:40]
+            Slides up from below on scroll.
+        ══════════════════════════════════ */}
         <section
           ref={nextSectionRef}
           style={{
-            position: "absolute",
-            inset: 0,
-            zIndex: 10,
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            alignItems: "center",
-            padding: "0 7vw",
-            gap: "5vw",
+            position: "absolute", inset: 0, zIndex: 10,
+            display: "grid", gridTemplateColumns: "1fr 1fr",
+            alignItems: "center", padding: "0 7vw", gap: "5vw",
             background: "var(--charcoal)",
-            transform: "translateY(100%)",   // GSAP will override, but good initial state
+            // Initial position — GSAP animates this to yPercent:0
+            transform: "translateY(100%)",
           }}
         >
-          {/* Ambient warm light */}
+          {/* Ambient glow */}
           <div style={{
             position: "absolute", inset: 0, pointerEvents: "none",
-            background: "radial-gradient(ellipse 60% 70% at 30% 50%, rgba(184,147,90,0.06) 0%, transparent 65%)",
+            background: "radial-gradient(ellipse 60% 70% at 28% 50%, rgba(239,101,72,0.09) 0%, transparent 65%)",
           }} />
-
-          {/* Top gold line */}
+          {/* Top line */}
           <div style={{
-            position: "absolute", top: 0, left: 0, right: 0, height: "1px",
-            background: "linear-gradient(90deg, transparent, var(--gold), transparent)",
-            opacity: 0.5,
+            position: "absolute", top: 0, left: 0, right: 0, height: "2px",
+            background: "linear-gradient(90deg, transparent, var(--primary), transparent)",
+            opacity: 0.6,
           }} />
 
-          {/* ── LEFT — destination frame for the travelling image ── */}
+          {/* LEFT: ghost frame — the floating image docks here visually */}
           <div style={{ position: "relative", height: "72vh" }}>
-            {/*
-              This frame is where the hero image LANDS.
-              It's intentionally styled to match the image proportions.
-              The image visually settles into this box.
-            */}
-            <div
-              ref={nextFrameRef}
-              style={{
-                position: "relative",
-                width: "100%",
-                height: "100%",
-                borderRadius: "3px",
-                border: "1px solid rgba(184,147,90,0.12)",
-                background: "rgba(255,255,255,0.02)",
-                overflow: "hidden",
-              }}
-            >
-              {/* Frame corner accents */}
+            <div style={{
+              width: "100%", height: "100%",
+              borderRadius: "3px",
+              border: "1px solid rgba(239,101,72,0.18)",
+              background: "rgba(241,204,185,0.02)",
+              position: "relative", overflow: "hidden",
+            }}>
+              {/* Corner brackets */}
               {[
-                { top: 0,    left: 0,  borderTop:"1px solid var(--gold)", borderLeft:"1px solid var(--gold)", width:20, height:20, opacity:.4 },
-                { top: 0,    right: 0, borderTop:"1px solid var(--gold)", borderRight:"1px solid var(--gold)", width:20, height:20, opacity:.4 },
-                { bottom: 0, left: 0,  borderBottom:"1px solid var(--gold)", borderLeft:"1px solid var(--gold)", width:20, height:20, opacity:.4 },
-                { bottom: 0, right: 0, borderBottom:"1px solid var(--gold)", borderRight:"1px solid var(--gold)", width:20, height:20, opacity:.4 },
+                { top: 0,    left:  0, borderTop:    "1px solid var(--primary)", borderLeft:  "1px solid var(--primary)" },
+                { top: 0,    right: 0, borderTop:    "1px solid var(--primary)", borderRight: "1px solid var(--primary)" },
+                { bottom: 0, left:  0, borderBottom: "1px solid var(--primary)", borderLeft:  "1px solid var(--primary)" },
+                { bottom: 0, right: 0, borderBottom: "1px solid var(--primary)", borderRight: "1px solid var(--primary)" },
               ].map((s, i) => (
-                <div key={i} style={{ position:"absolute", ...s }} />
+                <div key={i} style={{ position: "absolute", width: 22, height: 22, opacity: 0.5, ...s }} />
               ))}
-
-              {/* Ghost "arriving" label */}
+              {/* Bottom caption */}
               <div style={{
-                position: "absolute", inset: 0,
-                display: "flex", alignItems: "center", justifyContent: "center",
-              }}>
-                <span style={{
-                  fontFamily: "var(--sans)", fontSize: "8px", letterSpacing: "0.4em",
-                  color: "rgba(184,147,90,0.15)", textTransform: "uppercase",
-                }}>
-                  Gallery
-                </span>
-              </div>
-
-              {/* Bottom caption strip */}
-              <div style={{
-                position: "absolute", bottom: 0, left: 0, right: 0,
-                padding: "20px 20px",
-                background: "linear-gradient(to top, rgba(14,12,10,0.7) 0%, transparent 100%)",
+                position: "absolute", bottom: 0, left: 0, right: 0, padding: "20px",
+                background: "linear-gradient(to top, rgba(26,5,2,0.8), transparent)",
               }}>
                 <p style={{
                   fontFamily: "var(--sans)", fontSize: "9px", fontWeight: 300,
                   letterSpacing: "0.25em", textTransform: "uppercase",
-                  color: "rgba(212,180,131,0.6)",
-                }}>
-                  Natural · Undetectable
-                </p>
+                  color: "rgba(241,204,185,0.5)",
+                }}>Natural · Undetectable</p>
               </div>
             </div>
           </div>
 
-          {/* ── RIGHT — TEXT ── */}
-          <div ref={nextTextRef}>
+          {/* RIGHT: Text
+              position:relative + zIndex:40 ensures it renders ABOVE the floating
+              image (z:20) which may overlap this column during transition */}
+          <div
+            ref={nextTextRef}
+            style={{ position: "relative", zIndex: 40 }}
+          >
             <p className="ns-eyebrow" style={{
               fontFamily: "var(--sans)", fontSize: "9px", fontWeight: 300,
               letterSpacing: "0.42em", textTransform: "uppercase",
-              color: "var(--gold)", marginBottom: "28px", opacity: 0.8,
-            }}>
-              02 — The Method
-            </p>
+              color: "var(--primary)", marginBottom: "28px",
+            }}>02 — The Method</p>
 
             <h2 className="ns-title" style={{
               fontFamily: "var(--serif)",
-              fontSize: "clamp(38px, 4vw, 66px)",
-              fontWeight: 300,
-              lineHeight: 1.08,
+              fontSize: "clamp(36px, 3.8vw, 62px)",
+              fontWeight: 300, lineHeight: 1.08,
               letterSpacing: "-0.01em",
-              color: "var(--cream)",
-              marginBottom: "28px",
+              color: "var(--white)", marginBottom: "24px",
             }}>
               What Is Hair<br />
               <em style={{ fontStyle: "italic", color: "var(--gold-lt)" }}>Replacement?</em>
             </h2>
 
             <div className="ns-rule" style={{
-              width: "40px", height: "1px",
-              background: "rgba(184,147,90,0.55)",
-              marginBottom: "28px",
+              width: "40px", height: "2px",
+              background: "var(--primary)",
+              marginBottom: "24px", borderRadius: "1px",
             }} />
 
             <p className="ns-body" style={{
               fontFamily: "var(--sans)", fontSize: "14px", fontWeight: 200,
-              lineHeight: 2.05, color: "var(--dust)", maxWidth: "360px", marginBottom: "40px",
+              lineHeight: 2.0, color: "var(--dust)", maxWidth: "360px", marginBottom: "36px",
             }}>
               A sophisticated, non-surgical cosmetic solution designed to restore
               natural appearance with undetectable precision — crafted to match
-              your hair's exact texture, density, and colour.
+              your hair&apos;s exact texture, density, and colour.
             </p>
 
-            {/* Feature pills */}
             <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
               {["100% Human Hair", "Breathable Base", "Custom Density", "Same-Day Fit"].map(f => (
-                <span
-                  key={f}
-                  className="ns-pill"
-                  style={{
-                    fontFamily: "var(--sans)", fontSize: "9.5px", fontWeight: 300,
-                    letterSpacing: "0.12em", textTransform: "uppercase",
-                    color: "var(--gold-lt)",
-                    padding: "8px 16px",
-                    border: "1px solid rgba(184,147,90,0.2)",
-                    borderRadius: "2px",
-                    background: "rgba(184,147,90,0.04)",
-                  }}
-                >
-                  {f}
-                </span>
+                <span key={f} className="ns-pill" style={{
+                  fontFamily: "var(--sans)", fontSize: "9.5px", fontWeight: 300,
+                  letterSpacing: "0.12em", textTransform: "uppercase",
+                  color: "var(--soft-bg)", padding: "8px 16px",
+                  border: "1px solid rgba(239,101,72,0.25)", borderRadius: "2px",
+                  background: "rgba(239,101,72,0.07)",
+                }}>{f}</span>
               ))}
             </div>
           </div>
         </section>
 
-      </div>
-      {/* /wrapper — GSAP pin ends here */}
+        {/* ══════════════════════════════════
+            FLOATING IMAGE
+            ─────────────────────────────────
+            • Direct child of wrapper (NOT inside any section)
+            • This breaks it out of all stacking contexts
+            • zIndex: 20 = above both sections, below text column (z:40)
 
-      {/* ── AFTER SECTION — normal scroll flow ── */}
+            INITIAL POSITION matches hero's right column exactly:
+              left  = 7vw (pad) + ~40.5vw (col1) + 5vw (gap) = 52.5vw
+              width = 100vw - 52.5vw - 7vw (right pad) = 40.5vw
+                    = calc(50vw - 9.5vw)
+              top   = 50% with translateY(-50%) → vertically centred
+
+            GSAP END STATE:
+              xPercent: -112  → shifts left by 112% of own width ≈ 45.4vw
+                                 landing it at: 52.5vw - 45.4vw ≈ 7vw (left col start) ✓
+              scale: 0.923    → 78vh × 0.923 ≈ 72vh (matches destination frame height)
+        ══════════════════════════════════ */}
+        <div
+          ref={heroImageRef}
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "52.5vw",
+            transform: "translateY(-50%)",   // GSAP will ADD to this via xPercent/scale
+            width: "calc(50vw - 9.5vw)",
+            height: "78vh",
+            zIndex: 20,
+            willChange: "transform",
+          }}
+        >
+          {/* Decorative offset border */}
+          <div style={{
+            position: "absolute",
+            top: "-14px", right: "-14px", bottom: "14px", left: "14px",
+            border: "1px solid rgba(239,101,72,0.3)",
+            borderRadius: "3px",
+          }} />
+          {/* Image wrapper */}
+          <div style={{
+            position: "relative", width: "100%", height: "100%",
+            borderRadius: "3px", overflow: "hidden",
+            boxShadow: "0 32px 80px rgba(127,53,47,0.35), 0 8px 24px rgba(239,101,72,0.15)",
+          }}>
+            <Image
+              src="/1rev.png"
+              alt="Hair Replacement"
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 40vw"
+              style={{ objectFit: "cover", objectPosition: "center top" }}
+            />
+            {/* Bottom fade overlay */}
+            <div style={{
+              position: "absolute", inset: 0, pointerEvents: "none",
+              background: "linear-gradient(to bottom, transparent 55%, rgba(26,5,2,0.65) 100%)",
+              zIndex: 1,
+            }} />
+          </div>
+        </div>
+
+      </div>{/* /wrapper */}
+
+      {/* ══════════════════════════════════
+          AFTER SECTION
+      ══════════════════════════════════ */}
       <section style={{
-        minHeight: "100vh",
-        background: "var(--ink)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        flexDirection: "column",
-        gap: "20px",
-        padding: "80px 7vw",
-        textAlign: "center",
-        position: "relative",
+        background: "var(--cream)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        flexDirection: "column", gap: "24px",
+        padding: "80px 7vw", textAlign: "center", position: "relative",
       }}>
         <div style={{
-          position: "absolute", top: 0, left: 0, right: 0, height: "1px",
-          background: "linear-gradient(90deg, transparent, rgba(184,147,90,0.25), transparent)",
+          position: "absolute", top: 0, left: 0, right: 0, height: "2px",
+          background: "linear-gradient(90deg, transparent, var(--primary), transparent)",
+          opacity: 0.5,
+        }} />
+        <div style={{
+          position: "absolute", width: "560px", height: "560px",
+          top: "50%", left: "50%", transform: "translate(-50%,-50%)",
+          background: "radial-gradient(circle, rgba(239,101,72,0.07) 0%, transparent 65%)",
+          filter: "blur(90px)", borderRadius: "50%", pointerEvents: "none",
         }} />
         <h2 style={{
           fontFamily: "var(--serif)",
           fontSize: "clamp(36px, 3.5vw, 58px)",
-          fontWeight: 300,
-          color: "var(--cream)",
-          lineHeight: 1.1,
+          fontWeight: 300, color: "var(--charcoal)", lineHeight: 1.1,
+          position: "relative", zIndex: 1,
         }}>
           Crafted for You,<br />
-          <em style={{ fontStyle: "italic", color: "var(--gold-lt)" }}>Worn with Confidence</em>
+          <em style={{ fontStyle: "italic", color: "var(--primary)" }}>Worn with Confidence</em>
         </h2>
         <p style={{
           fontFamily: "var(--sans)", fontSize: "14px", fontWeight: 200,
           lineHeight: 2, color: "var(--dust)", maxWidth: "460px",
+          position: "relative", zIndex: 1,
         }}>
-          The page returns to its natural rhythm here — additional sections flow normally below.
+          The page returns to its natural rhythm — additional sections flow normally below.
         </p>
+        <div style={{
+          width: "40px", height: "2px",
+          background: "var(--primary)", borderRadius: "1px",
+          position: "relative", zIndex: 1,
+        }} />
       </section>
+
       <HairReplacementQA />
     </>
   );
